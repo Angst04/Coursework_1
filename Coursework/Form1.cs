@@ -19,7 +19,7 @@ namespace Coursework
         {
             for (int i = 0; i < passengers.Length; i++)
             {
-                passengers[i] = random.Next(0, 5); // Инициализируем количество пассажиров на каждой остановке случайным числом от 10 до 30
+                passengers[i] = random.Next(0, 5);
                 UpdatePassengerLabel(i);
             }
         }
@@ -35,11 +35,11 @@ namespace Coursework
             {
                 if (IsPeakHour())
                 {
-                    passengers[i] += random.Next(3, 10); // В час пик увеличиваем количество пассажиров на случайное число от 5 до 15
+                    passengers[i] += random.Next(3, 10);
                 }
                 else
                 {
-                    passengers[i] += random.Next(1, 3); // В обычное время увеличиваем количество пассажиров на случайное число от 1 до 5
+                    passengers[i] += random.Next(1, 3);
                 }
                 UpdatePassengerLabel(i);
             }
@@ -68,7 +68,7 @@ namespace Coursework
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            TimeSpan elapsedTime = TimeSpan.FromSeconds(1); // Исходное время одной секунды
+            TimeSpan elapsedTime = TimeSpan.FromSeconds(1);
             currentTime = currentTime.Add(elapsedTime.Multiply(timeMultiplier));
 
             nowTime.Text = new DateTime(currentTime.Ticks).ToString("HH:mm:ss");
