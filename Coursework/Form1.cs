@@ -100,5 +100,101 @@ namespace Coursework
             nowDate.Text = selectedDate.ToString("d");
             nowDateType.Text = typeOfDay;
         }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!checkBox1.Checked)
+            {
+                passCount1.Visible = false;
+                pictureBox1.Visible = false;
+                labelNum1.Visible = false;
+            }
+            else
+            {
+                passCount1.Visible = true;
+                pictureBox1.Visible = true;
+                labelNum1.Visible = true;
+            }
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!checkBox2.Checked)
+            {
+                passCount2.Visible = false;
+                pictureBox2.Visible = false;
+                labelNum2.Visible = false;
+            }
+            else
+            {
+                passCount2.Visible = true;
+                pictureBox2.Visible = true;
+                labelNum2.Visible = true;
+            }
+        }
+
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!checkBox3.Checked)
+            {
+                passCount3.Visible = false;
+                pictureBox3.Visible = false;
+                labelNum3.Visible = false;
+            }
+            else
+            {
+                passCount3.Visible = true;
+                pictureBox3.Visible = true;
+                labelNum3.Visible = true;
+            }
+        }
+
+        private void checkBox4_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!checkBox4.Checked)
+            {
+                passCount4.Visible = false;
+                pictureBox4.Visible = false;
+                labelNum4.Visible = false;
+            }
+            else
+            {
+                passCount4.Visible = true;
+                pictureBox4.Visible = true;
+                labelNum4.Visible = true;
+            }
+        }
+
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!checkBox5.Checked)
+            {
+                passCount5.Visible = false;
+                pictureBox5.Visible = false;
+                labelNum5.Visible = false;
+            }
+            else
+            {
+                passCount5.Visible = true;
+                pictureBox5.Visible = true;
+                labelNum5.Visible = true;
+            }
+        }
+
+        private void checkBox6_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!checkBox6.Checked)
+            {
+                passCount6.Visible = false;
+                pictureBox6.Visible = false;
+                labelNum6.Visible = false;
+            }
+            else
+            {
+                passCount6.Visible = true;
+                pictureBox6.Visible = true;
+                labelNum6.Visible = true;
+            }
+        }
     }
 }
