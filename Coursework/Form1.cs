@@ -196,5 +196,39 @@ namespace Coursework
                 labelNum6.Visible = true;
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (radioButton1.Checked)
+            {
+                passengers[0] = 0;
+                passCount1.Text = "0";
+            }
+            else if (radioButton2.Checked)
+            {
+                passengers[1] = 0;
+                passCount2.Text = "0";
+            }
+            else if (radioButton3.Checked)
+            {
+                passengers[2] = 0;
+                passCount3.Text = "0";
+            }
+            else if (radioButton4.Checked)
+            {
+                passengers[3] = 0;
+                passCount4.Text = "0";
+            }
+            else if (radioButton5.Checked)
+            {
+                passengers[4] = 0;
+                passCount5.Text = "0";
+            }
+            else if (radioButton6.Checked)
+            {
+                passengers[5] = 0;
+                passCount6.Text = "0";
+            }
+        }
     }
 }
