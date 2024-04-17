@@ -35,7 +35,7 @@
             label2 = new Label();
             nowTime = new Label();
             button1 = new Button();
-            timer1 = new System.Windows.Forms.Timer(components);
+            mainTimer = new System.Windows.Forms.Timer(components);
             pictureBox1 = new PictureBox();
             label3 = new Label();
             label4 = new Label();
@@ -82,14 +82,12 @@
             label1.Size = new Size(91, 15);
             label1.TabIndex = 0;
             label1.Text = "Текущее время";
-            label1.Click += label1_Click;
             // 
             // monthCalendar1
             // 
             monthCalendar1.Location = new Point(267, 64);
             monthCalendar1.Name = "monthCalendar1";
             monthCalendar1.TabIndex = 1;
-            monthCalendar1.DateChanged += monthCalendar1_DateChanged;
             // 
             // label2
             // 
@@ -103,12 +101,11 @@
             // nowTime
             // 
             nowTime.AutoSize = true;
-            nowTime.Location = new Point(145, 64);
+            nowTime.Location = new Point(153, 64);
             nowTime.Name = "nowTime";
-            nowTime.Size = new Size(49, 15);
+            nowTime.Size = new Size(34, 15);
             nowTime.TabIndex = 3;
-            nowTime.Text = "00:00:00";
-            nowTime.Click += label3_Click;
+            nowTime.Text = "00:00";
             // 
             // button1
             // 
@@ -119,10 +116,10 @@
             button1.Text = "Выслать ";
             button1.UseVisualStyleBackColor = true;
             // 
-            // timer1
+            // mainTimer
             // 
-            timer1.Enabled = true;
-            timer1.Tick += timer1_Tick;
+            mainTimer.Enabled = true;
+            mainTimer.Tick += timer1_Tick;
             // 
             // pictureBox1
             // 
@@ -133,7 +130,6 @@
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 5;
             pictureBox1.TabStop = false;
-            pictureBox1.Click += pictureBox1_Click;
             // 
             // label3
             // 
@@ -170,7 +166,6 @@
             passCount1.Size = new Size(13, 15);
             passCount1.TabIndex = 9;
             passCount1.Text = "0";
-            passCount1.Click += passCount1_Click;
             // 
             // passCount2
             // 
@@ -402,6 +397,12 @@
             radioButton1.Text = "№1";
             radioButton1.UseVisualStyleBackColor = true;
             // 
+            // passengerTimer
+            // 
+            passengerTimer.Enabled = true;
+            passengerTimer.Interval = 3000;
+            passengerTimer.Tick += passengerTimer_Tick;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -436,7 +437,6 @@
             Controls.Add(label1);
             Name = "Form1";
             Text = "Form1";
-            Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
@@ -456,7 +456,6 @@
         private Label label2;
         private Label nowTime;
         private Button button1;
-        private System.Windows.Forms.Timer timer1;
         private PictureBox pictureBox1;
         private Label label3;
         private Label label4;
@@ -485,6 +484,7 @@
         private RadioButton radioButton4;
         private RadioButton radioButton3;
         private RadioButton radioButton2;
+        private System.Windows.Forms.Timer mainTimer;
         private System.Windows.Forms.Timer passengerTimer;
     }
 }
