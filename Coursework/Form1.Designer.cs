@@ -30,12 +30,13 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            mainTimer = new System.Windows.Forms.Timer(components);
+            passengerTimer = new System.Windows.Forms.Timer(components);
             label1 = new Label();
-            monthCalendar1 = new MonthCalendar();
+            monthCalendar = new MonthCalendar();
             label2 = new Label();
             nowTime = new Label();
             button1 = new Button();
-            mainTimer = new System.Windows.Forms.Timer(components);
             pictureBox1 = new PictureBox();
             label3 = new Label();
             label4 = new Label();
@@ -64,7 +65,10 @@
             radioButton3 = new RadioButton();
             radioButton2 = new RadioButton();
             radioButton1 = new RadioButton();
-            passengerTimer = new System.Windows.Forms.Timer(components);
+            startButton = new Button();
+            label7 = new Label();
+            nowDate = new Label();
+            nowDateType = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -73,6 +77,15 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             groupBox1.SuspendLayout();
             SuspendLayout();
+            // 
+            // mainTimer
+            // 
+            mainTimer.Tick += timer1_Tick;
+            // 
+            // passengerTimer
+            // 
+            passengerTimer.Interval = 3000;
+            passengerTimer.Tick += passengerTimer_Tick;
             // 
             // label1
             // 
@@ -83,20 +96,21 @@
             label1.TabIndex = 0;
             label1.Text = "Текущее время";
             // 
-            // monthCalendar1
+            // monthCalendar
             // 
-            monthCalendar1.Location = new Point(267, 64);
-            monthCalendar1.Name = "monthCalendar1";
-            monthCalendar1.TabIndex = 1;
+            monthCalendar.Location = new Point(267, 64);
+            monthCalendar.Name = "monthCalendar";
+            monthCalendar.TabIndex = 1;
+            monthCalendar.DateChanged += monthCalendar_DateChanged;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(304, 40);
+            label2.Location = new Point(124, 90);
             label2.Name = "label2";
-            label2.Size = new Size(80, 15);
+            label2.Size = new Size(95, 15);
             label2.TabIndex = 2;
-            label2.Text = "Текущая дата";
+            label2.Text = "Выбранная дата";
             // 
             // nowTime
             // 
@@ -115,11 +129,6 @@
             button1.TabIndex = 4;
             button1.Text = "Выслать ";
             button1.UseVisualStyleBackColor = true;
-            // 
-            // mainTimer
-            // 
-            mainTimer.Enabled = true;
-            mainTimer.Tick += timer1_Tick;
             // 
             // pictureBox1
             // 
@@ -397,17 +406,52 @@
             radioButton1.Text = "№1";
             radioButton1.UseVisualStyleBackColor = true;
             // 
-            // passengerTimer
+            // startButton
             // 
-            passengerTimer.Enabled = true;
-            passengerTimer.Interval = 3000;
-            passengerTimer.Tick += passengerTimer_Tick;
+            startButton.Location = new Point(124, 171);
+            startButton.Name = "startButton";
+            startButton.Size = new Size(91, 55);
+            startButton.TabIndex = 28;
+            startButton.Text = "Начать смену";
+            startButton.UseVisualStyleBackColor = true;
+            startButton.Click += startButton_Click;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(304, 42);
+            label7.Name = "label7";
+            label7.Size = new Size(87, 15);
+            label7.TabIndex = 29;
+            label7.Text = "Выберите дату";
+            // 
+            // nowDate
+            // 
+            nowDate.AutoSize = true;
+            nowDate.Location = new Point(124, 113);
+            nowDate.Name = "nowDate";
+            nowDate.Size = new Size(73, 15);
+            nowDate.TabIndex = 30;
+            nowDate.Text = "                      ";
+            // 
+            // nowDateType
+            // 
+            nowDateType.AutoSize = true;
+            nowDateType.Location = new Point(124, 132);
+            nowDateType.Name = "nowDateType";
+            nowDateType.Size = new Size(85, 15);
+            nowDateType.TabIndex = 31;
+            nowDateType.Text = "                          ";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1470, 651);
+            Controls.Add(nowDateType);
+            Controls.Add(nowDate);
+            Controls.Add(label7);
+            Controls.Add(startButton);
             Controls.Add(groupBox1);
             Controls.Add(label6);
             Controls.Add(passCount6);
@@ -433,7 +477,7 @@
             Controls.Add(button1);
             Controls.Add(nowTime);
             Controls.Add(label2);
-            Controls.Add(monthCalendar1);
+            Controls.Add(monthCalendar);
             Controls.Add(label1);
             Name = "Form1";
             Text = "Form1";
@@ -452,7 +496,7 @@
         #endregion
 
         private Label label1;
-        private MonthCalendar monthCalendar1;
+        private MonthCalendar monthCalendar;
         private Label label2;
         private Label nowTime;
         private Button button1;
@@ -486,5 +530,9 @@
         private RadioButton radioButton2;
         private System.Windows.Forms.Timer mainTimer;
         private System.Windows.Forms.Timer passengerTimer;
+        private Button startButton;
+        private Label label7;
+        private Label nowDate;
+        private Label nowDateType;
     }
 }
