@@ -78,6 +78,7 @@
             checkBox6 = new CheckBox();
             pauseButton = new Button();
             resetButton = new Button();
+            panel1 = new Panel();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -560,11 +561,19 @@
             resetButton.UseVisualStyleBackColor = true;
             resetButton.Click += resetButton_Click;
             // 
+            // panel1
+            // 
+            panel1.Location = new Point(97, 394);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(973, 177);
+            panel1.TabIndex = 42;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1470, 651);
+            Controls.Add(panel1);
             Controls.Add(resetButton);
             Controls.Add(pauseButton);
             Controls.Add(checkBox6);
@@ -669,5 +678,6 @@
         private CheckBox checkBox6;
         private Button pauseButton;
         private Button resetButton;
+        private Panel panel1;
     }
 }

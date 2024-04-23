@@ -256,5 +256,10 @@ namespace Coursework
                 passCount6.Text = "0";
             }
         }
+
+        private void progressBar1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
