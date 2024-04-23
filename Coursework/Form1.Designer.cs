@@ -76,6 +76,8 @@
             checkBox4 = new CheckBox();
             checkBox5 = new CheckBox();
             checkBox6 = new CheckBox();
+            pauseButton = new Button();
+            resetButton = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -416,9 +418,9 @@
             // 
             // startButton
             // 
-            startButton.Location = new Point(124, 171);
+            startButton.Location = new Point(128, 150);
             startButton.Name = "startButton";
-            startButton.Size = new Size(91, 55);
+            startButton.Size = new Size(91, 23);
             startButton.TabIndex = 28;
             startButton.Text = "Начать смену";
             startButton.UseVisualStyleBackColor = true;
@@ -538,11 +540,33 @@
             checkBox6.UseVisualStyleBackColor = true;
             checkBox6.CheckedChanged += checkBox6_CheckedChanged;
             // 
+            // pauseButton
+            // 
+            pauseButton.Location = new Point(128, 179);
+            pauseButton.Name = "pauseButton";
+            pauseButton.Size = new Size(91, 23);
+            pauseButton.TabIndex = 40;
+            pauseButton.Text = "Пауза";
+            pauseButton.UseVisualStyleBackColor = true;
+            pauseButton.Click += pauseButton_Click;
+            // 
+            // resetButton
+            // 
+            resetButton.Location = new Point(128, 208);
+            resetButton.Name = "resetButton";
+            resetButton.Size = new Size(91, 23);
+            resetButton.TabIndex = 41;
+            resetButton.Text = "Сброс";
+            resetButton.UseVisualStyleBackColor = true;
+            resetButton.Click += resetButton_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1470, 651);
+            Controls.Add(resetButton);
+            Controls.Add(pauseButton);
             Controls.Add(checkBox6);
             Controls.Add(checkBox5);
             Controls.Add(checkBox4);
@@ -643,5 +667,7 @@
         private CheckBox checkBox4;
         private CheckBox checkBox5;
         private CheckBox checkBox6;
+        private Button pauseButton;
+        private Button resetButton;
     }
 }

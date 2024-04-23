@@ -1,6 +1,9 @@
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
+using ClassLibrary1;
+using System;
+
 namespace Coursework
 {
     public partial class Form1 : Form
@@ -15,6 +18,16 @@ namespace Coursework
         {
             InitializeComponent();
             InitializePassengerCounts();
+
+            DayOfWeek todayDate = monthCalendar.TodayDate.DayOfWeek;
+            DayOfWeek dayOfWeek = todayDate;
+            string typeOfDay;
+
+            if (dayOfWeek.ToString() == "Saturday" || dayOfWeek.ToString() == "Sunday") typeOfDay = "выходной";
+            else typeOfDay = "будний";
+
+            nowDate.Text = monthCalendar.TodayDate.ToString("d");
+            nowDateType.Text = typeOfDay;
         }
 
         private void InitializePassengerCounts()
@@ -86,6 +99,19 @@ namespace Coursework
         {
             mainTimer.Start();
             passengerTimer.Start();
+        }
+
+        private void pauseButton_Click(object sender, EventArgs e)
+        {
+            mainTimer.Stop();
+            passengerTimer.Stop();
+            startButton.Text = "Продолжить";
+        }
+
+        private void resetButton_Click(object sender, EventArgs e)
+        {
+            mainTimer.Stop();
+            passengerTimer.Stop();
         }
 
         private void monthCalendar_DateChanged(object sender, DateRangeEventArgs e)
