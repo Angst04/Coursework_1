@@ -8,7 +8,7 @@ namespace Coursework
 {
     static class DataBank
     {
-        public static string nowDate;
-        public static string nowDateType;
+        public static string NowDate;
+        public static string NowDateType;
     }
 }

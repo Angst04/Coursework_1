@@ -1,5 +1,6 @@
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Collections.Generic;
 
 using ClassLibrary1;
 using System;
@@ -14,13 +15,44 @@ namespace Coursework
         private Random random = new Random();
         private int[] passengers = new int[6];
 
+        private List<Bus> buses = new List<Bus>();
+
         public MainForm()
         {
             InitializeComponent();
             InitializePassengerCounts();
 
-            nowDate.Text = DataBank.nowDate;
-            nowDateType.Text = DataBank.nowDateType;
+            InitializeBuses();
+
+            nowDate.Text = DataBank.NowDate;
+            nowDateType.Text = DataBank.NowDateType;
+        }
+
+        private void InitializeBuses()
+        {
+            buses.Add(new Bus("Автобус", TimeSpan.FromHours(1), 60)); // Пример времени отправления: 1:00
+        }
+
+        private void UpdateBusProgress(TimeSpan currentTime)
+        {
+            testLabel1.Text = currentTime.ToString();
+            for (int i = 0; i < buses.Count; i++)
+            {
+                var bus = buses[i];
+                testLabel2.Text = bus.DepartureTime.ToString();
+                if (currentTime >= bus.DepartureTime)
+                {
+                    if (!bus.IsAtLastStop())
+                    {
+                        bus.MoveToNextStop(currentTime);
+                        transportCurrentStop.Text = bus.CurrentStop.ToString();
+                    }
+                    else
+                    {
+                        buses.RemoveAt(i);
+                    }
+                }
+            }
         }
 
         private void InitializePassengerCounts()
@@ -80,6 +112,8 @@ namespace Coursework
             nowTime.Text = new DateTime(currentTime.Ticks).ToString("HH:mm");
 
             passengerTimer.Tag = currentTime;
+
+            UpdateBusProgress(currentTime);
         }
 
         private void passengerTimer_Tick(object sender, EventArgs e)
@@ -90,15 +124,18 @@ namespace Coursework
 
         private void startButton_Click(object sender, EventArgs e)
         {
-            mainTimer.Start();
-            passengerTimer.Start();
-        }
-
-        private void pauseButton_Click(object sender, EventArgs e)
-        {
-            mainTimer.Stop();
-            passengerTimer.Stop();
-            startButton.Text = "Продолжить";
+            if (startButton.Text == "Пауза")
+            {
+                mainTimer.Stop();
+                passengerTimer.Stop();
+                startButton.Text = "Продолжить";
+            }
+            else
+            {
+                mainTimer.Start();
+                passengerTimer.Start();
+                startButton.Text = "Пауза";
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

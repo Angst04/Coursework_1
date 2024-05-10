@@ -26,8 +26,8 @@ namespace Coursework
             if (dayOfWeek.ToString() == "Saturday" || dayOfWeek.ToString() == "Sunday") typeOfDay = "выходной";
             else typeOfDay = "будний";
 
-            DataBank.nowDate = selectedDate.ToString("d");
-            DataBank.nowDateType = typeOfDay;
+            DataBank.NowDate = selectedDate.ToString("d");
+            DataBank.NowDateType = typeOfDay;
         }
 
         private void closeButton_Click(object sender, EventArgs e)
