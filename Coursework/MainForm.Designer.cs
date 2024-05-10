@@ -84,8 +84,7 @@
             label11 = new Label();
             label12 = new Label();
             label13 = new Label();
-            testLabel1 = new Label();
-            testLabel2 = new Label();
+            testLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -488,7 +487,7 @@
             transportCurrentStop.Name = "transportCurrentStop";
             transportCurrentStop.Size = new Size(13, 15);
             transportCurrentStop.TabIndex = 4;
-            transportCurrentStop.Text = "0";
+            transportCurrentStop.Text = "1";
             // 
             // transportChangeButton
             // 
@@ -615,31 +614,21 @@
             label13.TabIndex = 49;
             label13.Text = "Время до прибытия на следующую остановку";
             // 
-            // testLabel1
+            // testLabel
             // 
-            testLabel1.AutoSize = true;
-            testLabel1.Location = new Point(88, 323);
-            testLabel1.Name = "testLabel1";
-            testLabel1.Size = new Size(38, 15);
-            testLabel1.TabIndex = 50;
-            testLabel1.Text = "label5";
-            // 
-            // testLabel2
-            // 
-            testLabel2.AutoSize = true;
-            testLabel2.Location = new Point(195, 323);
-            testLabel2.Name = "testLabel2";
-            testLabel2.Size = new Size(38, 15);
-            testLabel2.TabIndex = 51;
-            testLabel2.Text = "label5";
+            testLabel.AutoSize = true;
+            testLabel.Location = new Point(98, 281);
+            testLabel.Name = "testLabel";
+            testLabel.Size = new Size(38, 15);
+            testLabel.TabIndex = 50;
+            testLabel.Text = "label5";
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1099, 584);
-            Controls.Add(testLabel2);
-            Controls.Add(testLabel1);
+            Controls.Add(testLabel);
             Controls.Add(label13);
             Controls.Add(label12);
             Controls.Add(label11);
@@ -753,7 +742,6 @@
         private Label label11;
         private Label label12;
         private Label label13;
-        private Label testLabel1;
-        private Label testLabel2;
+        private Label testLabel;
     }
 }

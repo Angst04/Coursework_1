@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using ClassLibrary1;
 using System;
+using System.Reflection;
 
 namespace Coursework
 {
@@ -31,20 +32,30 @@ namespace Coursework
         private void InitializeBuses()
         {
             buses.Add(new Bus("Автобус", TimeSpan.FromHours(1), 60)); // Пример времени отправления: 1:00
+
         }
 
         private void UpdateBusProgress(TimeSpan currentTime)
         {
-            testLabel1.Text = currentTime.ToString();
+            UpdatePassengerCounts(currentTime); // Обновляем количество пассажиров на остановках
+
             for (int i = 0; i < buses.Count; i++)
             {
                 var bus = buses[i];
-                testLabel2.Text = bus.DepartureTime.ToString();
+
                 if (currentTime >= bus.DepartureTime)
                 {
                     if (!bus.IsAtLastStop())
                     {
                         bus.MoveToNextStop(currentTime);
+
+                        int passengersToBoard = Math.Min(passengers[bus.CurrentStop - 1], 50 - bus.PassengersAmount);
+
+                        passengers[bus.CurrentStop - 1] -= passengersToBoard;
+                        bus.PassengersAmount += passengersToBoard;
+                        transportAmount.Text = bus.PassengersAmount.ToString() + "/50";
+                        UpdatePassengerLabel(i);
+
                         transportCurrentStop.Text = bus.CurrentStop.ToString();
                     }
                     else
@@ -54,6 +65,7 @@ namespace Coursework
                 }
             }
         }
+
 
         private void InitializePassengerCounts()
         {
@@ -73,36 +85,42 @@ namespace Coursework
         {
             for (int i = 0; i < passengers.Length; i++)
             {
-                if (nowDateType.Text == "будний")
-                {
-                    if ((now.Hours >= 7 && now.Hours < 10) || (now.Hours >= 18 && now.Hours < 21))
-                    {
-                        passengers[i] += random.Next(4, 12);
-                    }
-                    else if (now.Hours < 7 || now.Hours >= 21)
-                    {
-                        passengers[i] += random.Next(0, 7);
-                    }
-                    else
-                    {
-                        passengers[i] += random.Next(0, 7);
-                    }
-                }
-                else
-                {
-                    if (now.Hours < 7 || now.Hours >= 21)
-                    {
-                        passengers[i] += random.Next(0, 2);
-                    }
-                    else
-                    {
-                        passengers[i] += random.Next(0, 6);
-                    }
-                }
-
                 UpdatePassengerLabel(i);
+
+                if (now.Minutes % 15 == 0)
+                {
+                    if (nowDateType.Text == "будний")
+                    {
+                        if ((now.Hours >= 7 && now.Hours < 10) || (now.Hours >= 18 && now.Hours < 21))
+                        {
+                            passengers[i] += random.Next(1, 4);
+                        }
+                        else if (now.Hours < 7 || now.Hours >= 21)
+                        {
+                            passengers[i] += random.Next(1, 5);
+                        }
+                        else
+                        {
+                            passengers[i] += random.Next(0, 5);
+                        }
+                    }
+                    else
+                    {
+                        if (now.Hours < 7 || now.Hours >= 21)
+                        {
+                            passengers[i] += random.Next(0, 5);
+                        }
+                        else
+                        {
+                            passengers[i] += random.Next(0, 5);
+                        }
+                    }
+
+                    passengers[i] = Math.Min(passengers[i], 15);
+                }
             }
         }
+
 
         private void timer1_Tick(object sender, EventArgs e)
         {
