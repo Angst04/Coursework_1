@@ -31,13 +31,13 @@ namespace Coursework
 
         private void InitializeBuses()
         {
-            buses.Add(new Bus("Автобус", TimeSpan.FromHours(1), 60)); // Пример времени отправления: 1:00
+            buses.Add(new Bus("Автобус", TimeSpan.FromHours(1), 60));
 
         }
 
         private void UpdateBusProgress(TimeSpan currentTime)
         {
-            UpdatePassengerCounts(currentTime); // Обновляем количество пассажиров на остановках
+            UpdatePassengerCounts(currentTime);
 
             for (int i = 0; i < buses.Count; i++)
             {
@@ -49,11 +49,14 @@ namespace Coursework
                     {
                         bus.MoveToNextStop(currentTime);
 
-                        int passengersToBoard = Math.Min(passengers[bus.CurrentStop - 1], 50 - bus.PassengersAmount);
+                        int total = 50;
+                        if (bus.Type == "Маршрутка") total = 25;
+
+                        int passengersToBoard = Math.Min(passengers[bus.CurrentStop - 1], total - bus.PassengersAmount);
 
                         passengers[bus.CurrentStop - 1] -= passengersToBoard;
                         bus.PassengersAmount += passengersToBoard;
-                        transportAmount.Text = bus.PassengersAmount.ToString() + "/50";
+                        transportAmount.Text = bus.PassengersAmount.ToString() + "/" + total.ToString();
                         UpdatePassengerLabel(i);
 
                         transportCurrentStop.Text = bus.CurrentStop.ToString();
@@ -65,7 +68,6 @@ namespace Coursework
                 }
             }
         }
-
 
         private void InitializePassengerCounts()
         {
@@ -87,13 +89,13 @@ namespace Coursework
             {
                 UpdatePassengerLabel(i);
 
-                if (now.Minutes % 15 == 0)
+                if (now.Minutes % 20 == 0)
                 {
                     if (nowDateType.Text == "будний")
                     {
                         if ((now.Hours >= 7 && now.Hours < 10) || (now.Hours >= 18 && now.Hours < 21))
                         {
-                            passengers[i] += random.Next(1, 4);
+                            passengers[i] += random.Next(3, 7);
                         }
                         else if (now.Hours < 7 || now.Hours >= 21)
                         {
@@ -101,18 +103,18 @@ namespace Coursework
                         }
                         else
                         {
-                            passengers[i] += random.Next(0, 5);
+                            passengers[i] += random.Next(0, 2);
                         }
                     }
                     else
                     {
                         if (now.Hours < 7 || now.Hours >= 21)
                         {
-                            passengers[i] += random.Next(0, 5);
+                            passengers[i] += random.Next(0, 4);
                         }
                         else
                         {
-                            passengers[i] += random.Next(0, 5);
+                            passengers[i] += random.Next(0, 2);
                         }
                     }
 
@@ -134,10 +136,11 @@ namespace Coursework
             UpdateBusProgress(currentTime);
         }
 
+        // убрать этот таймер
         private void passengerTimer_Tick(object sender, EventArgs e)
         {
-            TimeSpan currentTime = (TimeSpan)passengerTimer.Tag;
-            UpdatePassengerCounts(currentTime);
+            //TimeSpan currentTime = (TimeSpan)passengerTimer.Tag;
+            //UpdatePassengerCounts(currentTime);
         }
 
         private void startButton_Click(object sender, EventArgs e)
