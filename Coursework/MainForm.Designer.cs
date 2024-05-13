@@ -31,11 +31,10 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             mainTimer = new System.Windows.Forms.Timer(components);
-            passengerTimer = new System.Windows.Forms.Timer(components);
             label1 = new Label();
             label2 = new Label();
             nowTime = new Label();
-            button1 = new Button();
+            sendButton = new Button();
             pictureBox1 = new PictureBox();
             label3 = new Label();
             label4 = new Label();
@@ -68,6 +67,13 @@
             nowDateType = new Label();
             panel1 = new Panel();
             flowLayoutPanel1 = new FlowLayoutPanel();
+            transportPanel = new Panel();
+            transportProgressBar = new ProgressBar();
+            transportCurrentStop = new Label();
+            transportChangeButton = new Button();
+            transportAmount = new Label();
+            transportDeparture = new Label();
+            transportType = new Label();
             closeButton = new Button();
             groupBox2 = new GroupBox();
             radioButton11 = new RadioButton();
@@ -78,13 +84,12 @@
             label12 = new Label();
             label13 = new Label();
             testLabel = new Label();
-            transportType = new Label();
-            transportDeparture = new Label();
-            transportAmount = new Label();
-            transportChangeButton = new Button();
-            transportCurrentStop = new Label();
-            transportProgressBar = new ProgressBar();
-            transportPanel = new Panel();
+            passengerTimer = new System.Windows.Forms.Timer(components);
+            groupBox3 = new GroupBox();
+            minibusRemainsLabel = new Label();
+            busRemainsLabel = new Label();
+            label6 = new Label();
+            label5 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -94,18 +99,14 @@
             groupBox1.SuspendLayout();
             panel1.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
-            groupBox2.SuspendLayout();
             transportPanel.SuspendLayout();
+            groupBox2.SuspendLayout();
+            groupBox3.SuspendLayout();
             SuspendLayout();
             // 
             // mainTimer
             // 
             mainTimer.Tick += timer1_Tick;
-            // 
-            // passengerTimer
-            // 
-            passengerTimer.Interval = 3000;
-            passengerTimer.Tick += passengerTimer_Tick;
             // 
             // label1
             // 
@@ -134,15 +135,15 @@
             nowTime.TabIndex = 3;
             nowTime.Text = "00:00";
             // 
-            // button1
+            // sendButton
             // 
-            button1.Location = new Point(899, 514);
-            button1.Name = "button1";
-            button1.Size = new Size(150, 42);
-            button1.TabIndex = 4;
-            button1.Text = "Выслать ";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            sendButton.Location = new Point(951, 512);
+            sendButton.Name = "sendButton";
+            sendButton.Size = new Size(122, 42);
+            sendButton.TabIndex = 4;
+            sendButton.Text = "Выслать ";
+            sendButton.UseVisualStyleBackColor = true;
+            sendButton.Click += button1_Click;
             // 
             // pictureBox1
             // 
@@ -352,7 +353,6 @@
             radioButton6.Name = "radioButton6";
             radioButton6.Size = new Size(44, 19);
             radioButton6.TabIndex = 32;
-            radioButton6.TabStop = true;
             radioButton6.Text = "№6";
             radioButton6.UseVisualStyleBackColor = true;
             // 
@@ -363,7 +363,6 @@
             radioButton5.Name = "radioButton5";
             radioButton5.Size = new Size(44, 19);
             radioButton5.TabIndex = 31;
-            radioButton5.TabStop = true;
             radioButton5.Text = "№5";
             radioButton5.UseVisualStyleBackColor = true;
             // 
@@ -374,7 +373,6 @@
             radioButton4.Name = "radioButton4";
             radioButton4.Size = new Size(44, 19);
             radioButton4.TabIndex = 30;
-            radioButton4.TabStop = true;
             radioButton4.Text = "№4";
             radioButton4.UseVisualStyleBackColor = true;
             // 
@@ -385,7 +383,6 @@
             radioButton3.Name = "radioButton3";
             radioButton3.Size = new Size(44, 19);
             radioButton3.TabIndex = 29;
-            radioButton3.TabStop = true;
             radioButton3.Text = "№3";
             radioButton3.UseVisualStyleBackColor = true;
             // 
@@ -396,13 +393,13 @@
             radioButton2.Name = "radioButton2";
             radioButton2.Size = new Size(44, 19);
             radioButton2.TabIndex = 28;
-            radioButton2.TabStop = true;
             radioButton2.Text = "№2";
             radioButton2.UseVisualStyleBackColor = true;
             // 
             // radioButton1
             // 
             radioButton1.AutoSize = true;
+            radioButton1.Checked = true;
             radioButton1.Location = new Point(17, 50);
             radioButton1.Name = "radioButton1";
             radioButton1.Size = new Size(44, 19);
@@ -424,7 +421,7 @@
             // nowDate
             // 
             nowDate.AutoSize = true;
-            nowDate.Location = new Point(67, 114);
+            nowDate.Location = new Point(80, 106);
             nowDate.Name = "nowDate";
             nowDate.Size = new Size(73, 15);
             nowDate.TabIndex = 30;
@@ -433,7 +430,7 @@
             // nowDateType
             // 
             nowDateType.AutoSize = true;
-            nowDateType.Location = new Point(67, 133);
+            nowDateType.Location = new Point(80, 126);
             nowDateType.Name = "nowDateType";
             nowDateType.Size = new Size(85, 15);
             nowDateType.TabIndex = 31;
@@ -458,6 +455,72 @@
             flowLayoutPanel1.Size = new Size(866, 263);
             flowLayoutPanel1.TabIndex = 1;
             flowLayoutPanel1.WrapContents = false;
+            // 
+            // transportPanel
+            // 
+            transportPanel.BackColor = Color.FromArgb(255, 224, 192);
+            transportPanel.Controls.Add(transportProgressBar);
+            transportPanel.Controls.Add(transportCurrentStop);
+            transportPanel.Controls.Add(transportChangeButton);
+            transportPanel.Controls.Add(transportAmount);
+            transportPanel.Controls.Add(transportDeparture);
+            transportPanel.Controls.Add(transportType);
+            transportPanel.Location = new Point(3, 3);
+            transportPanel.Name = "transportPanel";
+            transportPanel.Size = new Size(839, 44);
+            transportPanel.TabIndex = 3;
+            // 
+            // transportProgressBar
+            // 
+            transportProgressBar.Location = new Point(401, 10);
+            transportProgressBar.Name = "transportProgressBar";
+            transportProgressBar.Size = new Size(262, 23);
+            transportProgressBar.TabIndex = 5;
+            // 
+            // transportCurrentStop
+            // 
+            transportCurrentStop.AutoSize = true;
+            transportCurrentStop.Location = new Point(287, 14);
+            transportCurrentStop.Name = "transportCurrentStop";
+            transportCurrentStop.Size = new Size(13, 15);
+            transportCurrentStop.TabIndex = 4;
+            transportCurrentStop.Text = "1";
+            // 
+            // transportChangeButton
+            // 
+            transportChangeButton.Location = new Point(743, 10);
+            transportChangeButton.Name = "transportChangeButton";
+            transportChangeButton.Size = new Size(75, 23);
+            transportChangeButton.TabIndex = 3;
+            transportChangeButton.Text = "Изменить";
+            transportChangeButton.UseVisualStyleBackColor = true;
+            // 
+            // transportAmount
+            // 
+            transportAmount.AutoSize = true;
+            transportAmount.Location = new Point(188, 14);
+            transportAmount.Name = "transportAmount";
+            transportAmount.Size = new Size(30, 15);
+            transportAmount.TabIndex = 2;
+            transportAmount.Text = "0/50";
+            // 
+            // transportDeparture
+            // 
+            transportDeparture.AutoSize = true;
+            transportDeparture.Location = new Point(97, 14);
+            transportDeparture.Name = "transportDeparture";
+            transportDeparture.Size = new Size(34, 15);
+            transportDeparture.TabIndex = 1;
+            transportDeparture.Text = "00:30";
+            // 
+            // transportType
+            // 
+            transportType.AutoSize = true;
+            transportType.Location = new Point(11, 14);
+            transportType.Name = "transportType";
+            transportType.Size = new Size(52, 15);
+            transportType.TabIndex = 0;
+            transportType.Text = "Автобус";
             // 
             // closeButton
             // 
@@ -488,13 +551,13 @@
             radioButton11.Name = "radioButton11";
             radioButton11.Size = new Size(136, 19);
             radioButton11.TabIndex = 28;
-            radioButton11.TabStop = true;
             radioButton11.Text = "Маршрутка (25 чел)";
             radioButton11.UseVisualStyleBackColor = true;
             // 
             // radioButton12
             // 
             radioButton12.AutoSize = true;
+            radioButton12.Checked = true;
             radioButton12.Location = new Point(17, 50);
             radioButton12.Name = "radioButton12";
             radioButton12.Size = new Size(116, 19);
@@ -551,83 +614,72 @@
             // testLabel
             // 
             testLabel.AutoSize = true;
-            testLabel.Location = new Point(98, 281);
+            testLabel.Location = new Point(88, 281);
             testLabel.Name = "testLabel";
-            testLabel.Size = new Size(38, 15);
+            testLabel.Size = new Size(52, 15);
             testLabel.TabIndex = 50;
-            testLabel.Text = "label5";
+            testLabel.Text = "Отладка";
             // 
-            // transportType
+            // passengerTimer
             // 
-            transportType.AutoSize = true;
-            transportType.Location = new Point(11, 14);
-            transportType.Name = "transportType";
-            transportType.Size = new Size(52, 15);
-            transportType.TabIndex = 0;
-            transportType.Text = "Автобус";
+            passengerTimer.Interval = 3000;
+            passengerTimer.Tick += passengerTimer_Tick;
             // 
-            // transportDeparture
+            // groupBox3
             // 
-            transportDeparture.AutoSize = true;
-            transportDeparture.Location = new Point(97, 14);
-            transportDeparture.Name = "transportDeparture";
-            transportDeparture.Size = new Size(34, 15);
-            transportDeparture.TabIndex = 1;
-            transportDeparture.Text = "00:30";
+            groupBox3.Controls.Add(minibusRemainsLabel);
+            groupBox3.Controls.Add(busRemainsLabel);
+            groupBox3.Controls.Add(label6);
+            groupBox3.Controls.Add(label5);
+            groupBox3.Location = new Point(729, 487);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new Size(202, 80);
+            groupBox3.TabIndex = 51;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "Доступный транспорт";
             // 
-            // transportAmount
+            // minibusRemainsLabel
             // 
-            transportAmount.AutoSize = true;
-            transportAmount.Location = new Point(188, 14);
-            transportAmount.Name = "transportAmount";
-            transportAmount.Size = new Size(30, 15);
-            transportAmount.TabIndex = 2;
-            transportAmount.Text = "0/50";
+            minibusRemainsLabel.AutoSize = true;
+            minibusRemainsLabel.Location = new Point(158, 52);
+            minibusRemainsLabel.Name = "minibusRemainsLabel";
+            minibusRemainsLabel.Size = new Size(13, 15);
+            minibusRemainsLabel.TabIndex = 3;
+            minibusRemainsLabel.Text = "0";
             // 
-            // transportChangeButton
+            // busRemainsLabel
             // 
-            transportChangeButton.Location = new Point(743, 10);
-            transportChangeButton.Name = "transportChangeButton";
-            transportChangeButton.Size = new Size(75, 23);
-            transportChangeButton.TabIndex = 3;
-            transportChangeButton.Text = "Изменить";
-            transportChangeButton.UseVisualStyleBackColor = true;
+            busRemainsLabel.AutoSize = true;
+            busRemainsLabel.Location = new Point(158, 27);
+            busRemainsLabel.Name = "busRemainsLabel";
+            busRemainsLabel.Size = new Size(13, 15);
+            busRemainsLabel.TabIndex = 2;
+            busRemainsLabel.Text = "0";
             // 
-            // transportCurrentStop
+            // label6
             // 
-            transportCurrentStop.AutoSize = true;
-            transportCurrentStop.Location = new Point(287, 14);
-            transportCurrentStop.Name = "transportCurrentStop";
-            transportCurrentStop.Size = new Size(13, 15);
-            transportCurrentStop.TabIndex = 4;
-            transportCurrentStop.Text = "1";
+            label6.AutoSize = true;
+            label6.Location = new Point(18, 54);
+            label6.Name = "label6";
+            label6.Size = new Size(76, 15);
+            label6.TabIndex = 1;
+            label6.Text = "Маршрутки:";
             // 
-            // transportProgressBar
+            // label5
             // 
-            transportProgressBar.Location = new Point(401, 10);
-            transportProgressBar.Name = "transportProgressBar";
-            transportProgressBar.Size = new Size(262, 23);
-            transportProgressBar.TabIndex = 5;
-            // 
-            // transportPanel
-            // 
-            transportPanel.BackColor = Color.FromArgb(255, 224, 192);
-            transportPanel.Controls.Add(transportProgressBar);
-            transportPanel.Controls.Add(transportCurrentStop);
-            transportPanel.Controls.Add(transportChangeButton);
-            transportPanel.Controls.Add(transportAmount);
-            transportPanel.Controls.Add(transportDeparture);
-            transportPanel.Controls.Add(transportType);
-            transportPanel.Location = new Point(3, 3);
-            transportPanel.Name = "transportPanel";
-            transportPanel.Size = new Size(839, 44);
-            transportPanel.TabIndex = 3;
+            label5.AutoSize = true;
+            label5.Location = new Point(18, 27);
+            label5.Name = "label5";
+            label5.Size = new Size(64, 15);
+            label5.TabIndex = 0;
+            label5.Text = "Автобусы:";
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1099, 584);
+            Controls.Add(groupBox3);
             Controls.Add(testLabel);
             Controls.Add(label13);
             Controls.Add(label12);
@@ -661,7 +713,7 @@
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(pictureBox1);
-            Controls.Add(button1);
+            Controls.Add(sendButton);
             Controls.Add(nowTime);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -678,10 +730,12 @@
             groupBox1.PerformLayout();
             panel1.ResumeLayout(false);
             flowLayoutPanel1.ResumeLayout(false);
-            groupBox2.ResumeLayout(false);
-            groupBox2.PerformLayout();
             transportPanel.ResumeLayout(false);
             transportPanel.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
+            groupBox3.ResumeLayout(false);
+            groupBox3.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -691,7 +745,7 @@
         private Label label1;
         private Label label2;
         private Label nowTime;
-        private Button button1;
+        private Button sendButton;
         private PictureBox pictureBox1;
         private Label label3;
         private Label label4;
@@ -720,7 +774,6 @@
         private RadioButton radioButton3;
         private RadioButton radioButton2;
         private System.Windows.Forms.Timer mainTimer;
-        private System.Windows.Forms.Timer passengerTimer;
         private Button startButton;
         private Label nowDate;
         private Label nowDateType;
@@ -743,5 +796,11 @@
         private Label transportAmount;
         private Label transportDeparture;
         private Label transportType;
+        private System.Windows.Forms.Timer passengerTimer;
+        private GroupBox groupBox3;
+        private Label minibusRemainsLabel;
+        private Label busRemainsLabel;
+        private Label label6;
+        private Label label5;
     }
 }

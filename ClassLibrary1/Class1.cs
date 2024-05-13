@@ -7,11 +7,11 @@ namespace ClassLibrary1
     {
         public string Type { get; set; }
         public TimeSpan DepartureTime { get; set; }
-        public int CurrentStop { get; private set; }
+        public int CurrentStop { get; set; }
         public int PassengersAmount { get; set; }
         public int TimeBetweenStops { get; }
 
-        public Bus(string type, TimeSpan departureTime, int timeBetweenStops, int currentStop = 1, int passengersAmount = 0)
+        public Bus(string type, TimeSpan departureTime, int timeBetweenStops = 45, int currentStop = 1, int passengersAmount = 0)
         {
             Type = type;
             CurrentStop = currentStop;
@@ -23,7 +23,7 @@ namespace ClassLibrary1
         public void MoveToNextStop(TimeSpan lastMoveTime)
         {
             CurrentStop++;
-            DepartureTime = lastMoveTime.Add(TimeSpan.FromMinutes(TimeBetweenStops)); // Обновляем время последнего перемещения
+            DepartureTime = lastMoveTime.Add(TimeSpan.FromMinutes(TimeBetweenStops));
         }
 
         public bool IsAtLastStop()

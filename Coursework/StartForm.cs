@@ -15,11 +15,13 @@ namespace Coursework
         public StartForm()
         {
             InitializeComponent();
+
+            DateTime selectedDate = monthCalendar.TodayDate;
+            InitCalendar(selectedDate);
         }
 
-        private void monthCalendar_DateChanged(object sender, DateRangeEventArgs e)
+        private void InitCalendar(DateTime selectedDate)
         {
-            DateTime selectedDate = monthCalendar.SelectionStart;
             DayOfWeek dayOfWeek = selectedDate.DayOfWeek;
             string typeOfDay;
 
@@ -28,6 +30,12 @@ namespace Coursework
 
             DataBank.NowDate = selectedDate.ToString("d");
             DataBank.NowDateType = typeOfDay;
+        }
+
+        private void monthCalendar_DateChanged(object sender, DateRangeEventArgs e)
+        {
+            DateTime selectedDate = monthCalendar.SelectionStart;
+            InitCalendar(selectedDate);
         }
 
         private void closeButton_Click(object sender, EventArgs e)

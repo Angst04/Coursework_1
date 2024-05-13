@@ -18,24 +18,30 @@ namespace Coursework
 
         private List<Bus> buses = new List<Bus>();
 
+        private int busRemains = 3;
+        private int minibusRemains = 3;
+
         public MainForm()
         {
             InitializeComponent();
             InitializePassengerCounts();
 
             InitializeBuses();
-
             CreateBusForms();
 
             nowDate.Text = DataBank.NowDate;
             nowDateType.Text = DataBank.NowDateType;
+
+
+            busRemainsLabel.Text = busRemains.ToString();
+            minibusRemainsLabel.Text = minibusRemains.ToString();
         }
 
         private void InitializeBuses()
         {
-            buses.Add(new Bus("Автобус", TimeSpan.FromHours(1), 60));
-            buses.Add(new Bus("Маршрутка", TimeSpan.FromHours(2), 35));
-            buses.Add(new Bus("Автобус", TimeSpan.FromHours(3), 40));
+            buses.Add(new Bus("Автобус", TimeSpan.FromHours(1), 30));
+            //buses.Add(new Bus("Маршрутка", TimeSpan.FromHours(2), 35));
+            //buses.Add(new Bus("Автобус", TimeSpan.FromHours(3), 40));
         }
 
         private void CreateBusForms()
@@ -117,7 +123,7 @@ namespace Coursework
         {
             UpdatePassengerCounts(currentTime);
 
-            for (int i = 0; i < buses.Count; i++)
+            for (int i = buses.Count - 1; i >= 0; i--)
             {
                 var bus = buses[i];
 
@@ -138,38 +144,35 @@ namespace Coursework
                 Label transportType = flowLayoutPanel1.Controls.Find(typeName, true).FirstOrDefault() as Label;
 
                 int progressValue = (int)((timeToNextStop.TotalMinutes / bus.TimeBetweenStops) * 100);
-                testLabel.Text = progressValue.ToString();
 
-                if (progressValue <= 100)
+                if (transportProgressBar != null && progressValue <= 100 && progressValue >= 0)
                 {
-                    
                     transportProgressBar.Value = progressValue;
                 }
 
-                // transportType.Text = bus.Type.ToString();
-
+                int total = 50;
+                if (bus.Type == "Маршрутка") total = 25;
                 if (currentTime >= bus.DepartureTime)
                 {
                     if (!bus.IsAtLastStop())
                     {
                         bus.MoveToNextStop(currentTime);
 
-                        int total = 50;
-                        if (bus.Type == "Маршрутка") total = 25;
-
                         int passengersToBoard = Math.Min(passengers[bus.CurrentStop - 1], total - bus.PassengersAmount);
 
                         passengers[bus.CurrentStop - 1] -= passengersToBoard;
                         bus.PassengersAmount += passengersToBoard;
-                        transportAmount.Text = bus.PassengersAmount.ToString() + "/" + total.ToString();
                         UpdatePassengerLabel(i);
-
-                        transportCurrentStop.Text = bus.CurrentStop.ToString();
                     }
                     else
                     {
-                        buses.RemoveAt(i);
+                        bus.DepartureTime = currentTime.Add(TimeSpan.FromMinutes(60));
+                        bus.CurrentStop = 1;
+                        bus.PassengersAmount = 0;
+                        transportDeparture.Text = DateTime.Today.Add(bus.DepartureTime).ToString("HH:mm");
                     }
+                    transportCurrentStop.Text = bus.CurrentStop.ToString();
+                    transportAmount.Text = bus.PassengersAmount.ToString() + "/" + total.ToString();
                 }
             }
         }
@@ -186,7 +189,10 @@ namespace Coursework
 
         private void UpdatePassengerLabel(int stopIndex)
         {
-            Controls["passCount" + (stopIndex + 1)].Text = passengers[stopIndex].ToString();
+            if (stopIndex >= 0 && stopIndex < passengers.Length)
+            {
+                Controls["passCount" + (stopIndex + 1)].Text = passengers[stopIndex].ToString();
+            }
         }
 
         private void UpdatePassengerCounts(TimeSpan now)
@@ -265,38 +271,116 @@ namespace Coursework
             }
         }
 
+        public void AddNewBus(string type, int timeBetweenStops)
+        {
+            int currentStop = 1;
+            if (radioButton1.Checked) currentStop = 1;
+            else if (radioButton2.Checked) currentStop = 2;
+            else if (radioButton3.Checked) currentStop = 3;
+            else if (radioButton4.Checked) currentStop = 4;
+            else if (radioButton5.Checked) currentStop = 5;
+            else if (radioButton6.Checked) currentStop = 6;
+
+            buses.Add(new Bus(type, TimeSpan.FromHours(currentTime.TotalHours).Add(TimeSpan.FromMinutes(timeBetweenStops)), timeBetweenStops));
+
+            int ct = buses.Count() - 1;
+            int total = 50;
+            if (type == "Маршрутка") total = 25;
+
+            Panel transportPanel = new Panel();
+            System.Windows.Forms.ProgressBar transportProgressBar = new System.Windows.Forms.ProgressBar();
+            Label transportCurrentStop = new Label();
+            System.Windows.Forms.Button transportChangeButton = new System.Windows.Forms.Button();
+            Label transportAmount = new Label();
+            Label transportDeparture = new Label();
+            Label transportType = new Label();
+
+            transportPanel.Name = $"transportPanel_{ct}";
+            transportPanel.BackColor = Color.FromArgb(255, 224, 192);
+            transportPanel.Location = new Point(3, 3);
+            transportPanel.Size = new Size(839, 44);
+            transportPanel.TabIndex = 3;
+
+            transportProgressBar.Location = new Point(401, 10);
+            transportProgressBar.Name = $"transportProgressBar_{ct}";
+            transportProgressBar.Size = new Size(262, 23);
+            transportProgressBar.TabIndex = 5;
+
+            transportCurrentStop.AutoSize = true;
+            transportCurrentStop.Location = new Point(287, 14);
+            transportCurrentStop.Name = $"transportCurrentStop_{ct}";
+            transportCurrentStop.Size = new Size(13, 15);
+            transportCurrentStop.TabIndex = 4;
+            transportCurrentStop.Text = currentStop.ToString();
+
+            transportChangeButton.Location = new Point(743, 10);
+            transportChangeButton.Name = $"transportChangeButton_{ct}";
+            transportChangeButton.Size = new Size(75, 23);
+            transportChangeButton.TabIndex = 3;
+            transportChangeButton.Text = "Изменить";
+            transportChangeButton.UseVisualStyleBackColor = true;
+
+            transportAmount.AutoSize = true;
+            transportAmount.Location = new Point(188, 14);
+            transportAmount.Name = $"transportAmount_{ct}";
+            transportAmount.Size = new Size(30, 15);
+            transportAmount.TabIndex = 2;
+            transportAmount.Text = "0/" + total.ToString();
+
+            transportDeparture.AutoSize = true;
+            transportDeparture.Location = new Point(97, 14);
+            transportDeparture.Name = $"transportDeparture_{ct}";
+            transportDeparture.Size = new Size(34, 15);
+            transportDeparture.TabIndex = 1;
+            transportDeparture.Text = DateTime.Today.Add(currentTime).ToString("HH:mm");
+
+
+            transportType.AutoSize = true;
+            transportType.Location = new Point(11, 14);
+            transportType.Name = $"transportType_{ct}";
+            transportType.Size = new Size(52, 15);
+            transportType.TabIndex = 0;
+            transportType.Text = type;
+
+            transportPanel.Controls.Add(transportProgressBar);
+            transportPanel.Controls.Add(transportCurrentStop);
+            transportPanel.Controls.Add(transportChangeButton);
+            transportPanel.Controls.Add(transportAmount);
+            transportPanel.Controls.Add(transportDeparture);
+            transportPanel.Controls.Add(transportType);
+
+            flowLayoutPanel1.Controls.Add(transportPanel);
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
-            if (radioButton1.Checked)
+            string type;
+            int timeBetweenStops;
+            if (busRemains > 0 && radioButton12.Checked)
             {
-                passengers[0] = 0;
-                passCount1.Text = "0";
+                type = "Автобус";
+                timeBetweenStops = 45;
+                busRemains--;
+                busRemainsLabel.Text = busRemains.ToString();
+                if (busRemains == 0) busRemainsLabel.ForeColor = Color.Red;
+                AddNewBus(type, timeBetweenStops);
             }
-            else if (radioButton2.Checked)
+            else if (minibusRemains > 0 && radioButton11.Checked)
             {
-                passengers[1] = 0;
-                passCount2.Text = "0";
+                type = "Маршрутка";
+                timeBetweenStops = 30;
+                minibusRemains--;
+                minibusRemainsLabel.Text = minibusRemains.ToString();
+                if (minibusRemains == 0) minibusRemainsLabel.ForeColor = Color.Red;
+                AddNewBus(type, timeBetweenStops);
             }
-            else if (radioButton3.Checked)
+            else
             {
-                passengers[2] = 0;
-                passCount3.Text = "0";
+                DialogResult result = MessageBox.Show(
+                "Выбранный транспорт не доступен. Обратите внимание на доступный транспорт",
+                "Предупреждение");
             }
-            else if (radioButton4.Checked)
-            {
-                passengers[3] = 0;
-                passCount4.Text = "0";
-            }
-            else if (radioButton5.Checked)
-            {
-                passengers[4] = 0;
-                passCount5.Text = "0";
-            }
-            else if (radioButton6.Checked)
-            {
-                passengers[5] = 0;
-                passCount6.Text = "0";
-            }
+
         }
 
         private void closeButton_Click(object sender, EventArgs e)
