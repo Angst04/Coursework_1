@@ -68,13 +68,6 @@
             nowDateType = new Label();
             panel1 = new Panel();
             flowLayoutPanel1 = new FlowLayoutPanel();
-            transportPanel = new Panel();
-            transportProgressBar = new ProgressBar();
-            transportCurrentStop = new Label();
-            transportChangeButton = new Button();
-            transportAmount = new Label();
-            transportDeparture = new Label();
-            transportType = new Label();
             closeButton = new Button();
             groupBox2 = new GroupBox();
             radioButton11 = new RadioButton();
@@ -85,6 +78,13 @@
             label12 = new Label();
             label13 = new Label();
             testLabel = new Label();
+            transportType = new Label();
+            transportDeparture = new Label();
+            transportAmount = new Label();
+            transportChangeButton = new Button();
+            transportCurrentStop = new Label();
+            transportProgressBar = new ProgressBar();
+            transportPanel = new Panel();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -94,8 +94,8 @@
             groupBox1.SuspendLayout();
             panel1.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
-            transportPanel.SuspendLayout();
             groupBox2.SuspendLayout();
+            transportPanel.SuspendLayout();
             SuspendLayout();
             // 
             // mainTimer
@@ -459,72 +459,6 @@
             flowLayoutPanel1.TabIndex = 1;
             flowLayoutPanel1.WrapContents = false;
             // 
-            // transportPanel
-            // 
-            transportPanel.BackColor = Color.FromArgb(255, 224, 192);
-            transportPanel.Controls.Add(transportProgressBar);
-            transportPanel.Controls.Add(transportCurrentStop);
-            transportPanel.Controls.Add(transportChangeButton);
-            transportPanel.Controls.Add(transportAmount);
-            transportPanel.Controls.Add(transportDeparture);
-            transportPanel.Controls.Add(transportType);
-            transportPanel.Location = new Point(3, 3);
-            transportPanel.Name = "transportPanel";
-            transportPanel.Size = new Size(839, 44);
-            transportPanel.TabIndex = 3;
-            // 
-            // transportProgressBar
-            // 
-            transportProgressBar.Location = new Point(401, 10);
-            transportProgressBar.Name = "transportProgressBar";
-            transportProgressBar.Size = new Size(262, 23);
-            transportProgressBar.TabIndex = 5;
-            // 
-            // transportCurrentStop
-            // 
-            transportCurrentStop.AutoSize = true;
-            transportCurrentStop.Location = new Point(287, 14);
-            transportCurrentStop.Name = "transportCurrentStop";
-            transportCurrentStop.Size = new Size(13, 15);
-            transportCurrentStop.TabIndex = 4;
-            transportCurrentStop.Text = "1";
-            // 
-            // transportChangeButton
-            // 
-            transportChangeButton.Location = new Point(743, 10);
-            transportChangeButton.Name = "transportChangeButton";
-            transportChangeButton.Size = new Size(75, 23);
-            transportChangeButton.TabIndex = 3;
-            transportChangeButton.Text = "Изменить";
-            transportChangeButton.UseVisualStyleBackColor = true;
-            // 
-            // transportAmount
-            // 
-            transportAmount.AutoSize = true;
-            transportAmount.Location = new Point(188, 14);
-            transportAmount.Name = "transportAmount";
-            transportAmount.Size = new Size(30, 15);
-            transportAmount.TabIndex = 2;
-            transportAmount.Text = "0/50";
-            // 
-            // transportDeparture
-            // 
-            transportDeparture.AutoSize = true;
-            transportDeparture.Location = new Point(97, 14);
-            transportDeparture.Name = "transportDeparture";
-            transportDeparture.Size = new Size(34, 15);
-            transportDeparture.TabIndex = 1;
-            transportDeparture.Text = "00:30";
-            // 
-            // transportType
-            // 
-            transportType.AutoSize = true;
-            transportType.Location = new Point(11, 14);
-            transportType.Name = "transportType";
-            transportType.Size = new Size(52, 15);
-            transportType.TabIndex = 0;
-            transportType.Text = "Автобус";
-            // 
             // closeButton
             // 
             closeButton.Font = new Font("Calibri", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
@@ -623,6 +557,72 @@
             testLabel.TabIndex = 50;
             testLabel.Text = "label5";
             // 
+            // transportType
+            // 
+            transportType.AutoSize = true;
+            transportType.Location = new Point(11, 14);
+            transportType.Name = "transportType";
+            transportType.Size = new Size(52, 15);
+            transportType.TabIndex = 0;
+            transportType.Text = "Автобус";
+            // 
+            // transportDeparture
+            // 
+            transportDeparture.AutoSize = true;
+            transportDeparture.Location = new Point(97, 14);
+            transportDeparture.Name = "transportDeparture";
+            transportDeparture.Size = new Size(34, 15);
+            transportDeparture.TabIndex = 1;
+            transportDeparture.Text = "00:30";
+            // 
+            // transportAmount
+            // 
+            transportAmount.AutoSize = true;
+            transportAmount.Location = new Point(188, 14);
+            transportAmount.Name = "transportAmount";
+            transportAmount.Size = new Size(30, 15);
+            transportAmount.TabIndex = 2;
+            transportAmount.Text = "0/50";
+            // 
+            // transportChangeButton
+            // 
+            transportChangeButton.Location = new Point(743, 10);
+            transportChangeButton.Name = "transportChangeButton";
+            transportChangeButton.Size = new Size(75, 23);
+            transportChangeButton.TabIndex = 3;
+            transportChangeButton.Text = "Изменить";
+            transportChangeButton.UseVisualStyleBackColor = true;
+            // 
+            // transportCurrentStop
+            // 
+            transportCurrentStop.AutoSize = true;
+            transportCurrentStop.Location = new Point(287, 14);
+            transportCurrentStop.Name = "transportCurrentStop";
+            transportCurrentStop.Size = new Size(13, 15);
+            transportCurrentStop.TabIndex = 4;
+            transportCurrentStop.Text = "1";
+            // 
+            // transportProgressBar
+            // 
+            transportProgressBar.Location = new Point(401, 10);
+            transportProgressBar.Name = "transportProgressBar";
+            transportProgressBar.Size = new Size(262, 23);
+            transportProgressBar.TabIndex = 5;
+            // 
+            // transportPanel
+            // 
+            transportPanel.BackColor = Color.FromArgb(255, 224, 192);
+            transportPanel.Controls.Add(transportProgressBar);
+            transportPanel.Controls.Add(transportCurrentStop);
+            transportPanel.Controls.Add(transportChangeButton);
+            transportPanel.Controls.Add(transportAmount);
+            transportPanel.Controls.Add(transportDeparture);
+            transportPanel.Controls.Add(transportType);
+            transportPanel.Location = new Point(3, 3);
+            transportPanel.Name = "transportPanel";
+            transportPanel.Size = new Size(839, 44);
+            transportPanel.TabIndex = 3;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -678,10 +678,10 @@
             groupBox1.PerformLayout();
             panel1.ResumeLayout(false);
             flowLayoutPanel1.ResumeLayout(false);
-            transportPanel.ResumeLayout(false);
-            transportPanel.PerformLayout();
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
+            transportPanel.ResumeLayout(false);
+            transportPanel.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -726,22 +726,22 @@
         private Label nowDateType;
         private Panel panel1;
         private FlowLayoutPanel flowLayoutPanel1;
-        private Panel transportPanel;
         private Button closeButton;
         private GroupBox groupBox2;
         private RadioButton radioButton11;
         private RadioButton radioButton12;
-        private Label transportCurrentStop;
-        private Button transportChangeButton;
-        private Label transportAmount;
-        private Label transportDeparture;
-        private Label transportType;
-        private ProgressBar transportProgressBar;
         private Label label9;
         private Label label10;
         private Label label11;
         private Label label12;
         private Label label13;
         private Label testLabel;
+        private Panel transportPanel;
+        private ProgressBar transportProgressBar;
+        private Label transportCurrentStop;
+        private Button transportChangeButton;
+        private Label transportAmount;
+        private Label transportDeparture;
+        private Label transportType;
     }
 }

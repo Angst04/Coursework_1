@@ -40,6 +40,7 @@ namespace Coursework
 
         private void CreateBusForms()
         {
+            int ct = 0;
             foreach (var bus in buses)
             {
                 Panel transportPanel = new Panel();
@@ -50,48 +51,48 @@ namespace Coursework
                 Label transportDeparture = new Label();
                 Label transportType = new Label();
 
-                transportPanel.Name = "transportPanel";
+                transportPanel.Name = $"transportPanel_{ct}";
                 transportPanel.BackColor = Color.FromArgb(255, 224, 192);
                 transportPanel.Location = new Point(3, 3);
                 transportPanel.Size = new Size(839, 44);
                 transportPanel.TabIndex = 3;
-               
+
                 transportProgressBar.Location = new Point(401, 10);
-                transportProgressBar.Name = "transportProgressBar";
+                transportProgressBar.Name = $"transportProgressBar_{ct}";
                 transportProgressBar.Size = new Size(262, 23);
                 transportProgressBar.TabIndex = 5;
-                
+
                 transportCurrentStop.AutoSize = true;
                 transportCurrentStop.Location = new Point(287, 14);
-                transportCurrentStop.Name = "transportCurrentStop";
+                transportCurrentStop.Name = $"transportCurrentStop_{ct}";
                 transportCurrentStop.Size = new Size(13, 15);
                 transportCurrentStop.TabIndex = 4;
                 transportCurrentStop.Text = bus.CurrentStop.ToString();
-                
+
                 transportChangeButton.Location = new Point(743, 10);
-                transportChangeButton.Name = "transportChangeButton";
+                transportChangeButton.Name = $"transportChangeButton_{ct}";
                 transportChangeButton.Size = new Size(75, 23);
                 transportChangeButton.TabIndex = 3;
                 transportChangeButton.Text = "Изменить";
                 transportChangeButton.UseVisualStyleBackColor = true;
-                
+
                 transportAmount.AutoSize = true;
                 transportAmount.Location = new Point(188, 14);
-                transportAmount.Name = "transportAmount";
+                transportAmount.Name = $"transportAmount_{ct}";
                 transportAmount.Size = new Size(30, 15);
                 transportAmount.TabIndex = 2;
                 transportAmount.Text = bus.PassengersAmount.ToString();
-                
+
                 transportDeparture.AutoSize = true;
                 transportDeparture.Location = new Point(97, 14);
-                transportDeparture.Name = "transportDeparture";
+                transportDeparture.Name = $"transportDeparture_{ct}";
                 transportDeparture.Size = new Size(34, 15);
                 transportDeparture.TabIndex = 1;
                 transportDeparture.Text = bus.DepartureTime.ToString();
-                
+
                 transportType.AutoSize = true;
                 transportType.Location = new Point(11, 14);
-                transportType.Name = "transportType";
+                transportType.Name = $"transportType_{ct}";
                 transportType.Size = new Size(52, 15);
                 transportType.TabIndex = 0;
                 transportType.Text = bus.Type;
@@ -104,6 +105,7 @@ namespace Coursework
                 transportPanel.Controls.Add(transportType);
 
                 flowLayoutPanel1.Controls.Add(transportPanel);
+                ct++;
             }
         }
 
@@ -115,8 +117,21 @@ namespace Coursework
             {
                 var bus = buses[i];
 
+                string progressBarName = $"transportProgressBar_{i}";
+                string currentStopName = $"transportCurrentStop_{i}";
+                string changeButtonName = $"transportChangeButton_{i}";
+                string amountLabelName = $"transportAmount_{i}";
+                string departureLabelName = $"transportDeparture_{i}";
+                string typeName = $"transportType_{i}";
+
+                System.Windows.Forms.ProgressBar transportProgressBar = flowLayoutPanel1.Controls.Find(progressBarName, true).FirstOrDefault() as System.Windows.Forms.ProgressBar;
+                Label transportCurrentStop = flowLayoutPanel1.Controls.Find(currentStopName, true).FirstOrDefault() as Label;
+                System.Windows.Forms.Button transportChangeButton = flowLayoutPanel1.Controls.Find(changeButtonName, true).FirstOrDefault() as System.Windows.Forms.Button;
+                Label transportAmount = flowLayoutPanel1.Controls.Find(amountLabelName, true).FirstOrDefault() as Label;
+                Label transportDeparture = flowLayoutPanel1.Controls.Find(departureLabelName, true).FirstOrDefault() as Label;
+                Label transportType = flowLayoutPanel1.Controls.Find(typeName, true).FirstOrDefault() as Label;
+
                 transportType.Text = bus.Type.ToString();
-                
 
                 if (currentTime >= bus.DepartureTime)
                 {
@@ -143,6 +158,7 @@ namespace Coursework
                 }
             }
         }
+
 
         private void InitializePassengerCounts()
         {
