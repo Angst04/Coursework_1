@@ -25,6 +25,8 @@ namespace Coursework
 
             InitializeBuses();
 
+            CreateBusForms();
+
             nowDate.Text = DataBank.NowDate;
             nowDateType.Text = DataBank.NowDateType;
         }
@@ -32,7 +34,77 @@ namespace Coursework
         private void InitializeBuses()
         {
             buses.Add(new Bus("Автобус", TimeSpan.FromHours(1), 60));
+            buses.Add(new Bus("Автобус", TimeSpan.FromHours(2), 60));
+            buses.Add(new Bus("Автобус", TimeSpan.FromHours(3), 60));
+        }
 
+        private void CreateBusForms()
+        {
+            foreach (var bus in buses)
+            {
+                Panel transportPanel = new Panel();
+                System.Windows.Forms.ProgressBar transportProgressBar = new System.Windows.Forms.ProgressBar();
+                Label transportCurrentStop = new Label();
+                System.Windows.Forms.Button transportChangeButton = new System.Windows.Forms.Button();
+                Label transportAmount = new Label();
+                Label transportDeparture = new Label();
+                Label transportType = new Label();
+
+                transportPanel.Name = "transportPanel";
+                transportPanel.BackColor = Color.FromArgb(255, 224, 192);
+                transportPanel.Location = new Point(3, 3);
+                transportPanel.Size = new Size(839, 44);
+                transportPanel.TabIndex = 3;
+               
+                transportProgressBar.Location = new Point(401, 10);
+                transportProgressBar.Name = "transportProgressBar";
+                transportProgressBar.Size = new Size(262, 23);
+                transportProgressBar.TabIndex = 5;
+                
+                transportCurrentStop.AutoSize = true;
+                transportCurrentStop.Location = new Point(287, 14);
+                transportCurrentStop.Name = "transportCurrentStop";
+                transportCurrentStop.Size = new Size(13, 15);
+                transportCurrentStop.TabIndex = 4;
+                transportCurrentStop.Text = bus.CurrentStop.ToString();
+                
+                transportChangeButton.Location = new Point(743, 10);
+                transportChangeButton.Name = "transportChangeButton";
+                transportChangeButton.Size = new Size(75, 23);
+                transportChangeButton.TabIndex = 3;
+                transportChangeButton.Text = "Изменить";
+                transportChangeButton.UseVisualStyleBackColor = true;
+                
+                transportAmount.AutoSize = true;
+                transportAmount.Location = new Point(188, 14);
+                transportAmount.Name = "transportAmount";
+                transportAmount.Size = new Size(30, 15);
+                transportAmount.TabIndex = 2;
+                transportAmount.Text = bus.PassengersAmount.ToString();
+                
+                transportDeparture.AutoSize = true;
+                transportDeparture.Location = new Point(97, 14);
+                transportDeparture.Name = "transportDeparture";
+                transportDeparture.Size = new Size(34, 15);
+                transportDeparture.TabIndex = 1;
+                transportDeparture.Text = bus.DepartureTime.ToString();
+                
+                transportType.AutoSize = true;
+                transportType.Location = new Point(11, 14);
+                transportType.Name = "transportType";
+                transportType.Size = new Size(52, 15);
+                transportType.TabIndex = 0;
+                transportType.Text = bus.Type;
+
+                transportPanel.Controls.Add(transportProgressBar);
+                transportPanel.Controls.Add(transportCurrentStop);
+                transportPanel.Controls.Add(transportChangeButton);
+                transportPanel.Controls.Add(transportAmount);
+                transportPanel.Controls.Add(transportDeparture);
+                transportPanel.Controls.Add(transportType);
+
+                flowLayoutPanel1.Controls.Add(transportPanel);
+            }
         }
 
         private void UpdateBusProgress(TimeSpan currentTime)
@@ -42,6 +114,9 @@ namespace Coursework
             for (int i = 0; i < buses.Count; i++)
             {
                 var bus = buses[i];
+
+                transportType.Text = bus.Type.ToString();
+                
 
                 if (currentTime >= bus.DepartureTime)
                 {
