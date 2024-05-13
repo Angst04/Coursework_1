@@ -5,13 +5,14 @@ using System.Collections.Generic;
 using ClassLibrary1;
 using System;
 using System.Reflection;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
 
 namespace Coursework
 {
     public partial class MainForm : Form
     {
         private TimeSpan currentTime = TimeSpan.Zero;
-        private const int timeMultiplier = 100;
+        private const int timeMultiplier = 30;
 
         private Random random = new Random();
         private int[] passengers = new int[6];
@@ -39,9 +40,9 @@ namespace Coursework
 
         private void InitializeBuses()
         {
-            buses.Add(new Bus("Автобус", TimeSpan.FromHours(1), 30));
-            //buses.Add(new Bus("Маршрутка", TimeSpan.FromHours(2), 35));
-            //buses.Add(new Bus("Автобус", TimeSpan.FromHours(3), 40));
+            buses.Add(new Bus("Автобус", TimeSpan.FromHours(1)));
+            buses.Add(new Bus("Маршрутка", TimeSpan.FromHours(2)));
+            buses.Add(new Bus("Автобус", TimeSpan.FromHours(3)));
         }
 
         private void CreateBusForms()
@@ -386,6 +387,30 @@ namespace Coursework
         private void closeButton_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void stopButton_Click(object sender, EventArgs e)
+        {
+            mainTimer.Stop();
+            passengerTimer.Stop();
+
+            DialogResult result = MessageBox.Show(
+            "Вы уверены, что хотите завершить смену? Это действие вернёт вас в стартовое меню",
+            "Предупреждение",
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Information,
+            MessageBoxDefaultButton.Button1,
+            MessageBoxOptions.DefaultDesktopOnly);
+
+            if (result == DialogResult.Yes)
+                Application.Restart();
+            else if (startButton.Text == "Пауза")
+            {
+                mainTimer.Start();
+                passengerTimer.Start();
+            }
+
+            this.TopMost = true;
         }
     }
 }

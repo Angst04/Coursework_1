@@ -90,6 +90,7 @@
             busRemainsLabel = new Label();
             label6 = new Label();
             label5 = new Label();
+            stopButton = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -412,7 +413,7 @@
             // 
             startButton.Location = new Point(72, 163);
             startButton.Name = "startButton";
-            startButton.Size = new Size(91, 49);
+            startButton.Size = new Size(91, 38);
             startButton.TabIndex = 28;
             startButton.Text = "Начать смену";
             startButton.UseVisualStyleBackColor = true;
@@ -674,11 +675,23 @@
             label5.TabIndex = 0;
             label5.Text = "Автобусы:";
             // 
+            // stopButton
+            // 
+            stopButton.BackColor = Color.FromArgb(255, 128, 128);
+            stopButton.Location = new Point(72, 217);
+            stopButton.Name = "stopButton";
+            stopButton.Size = new Size(91, 38);
+            stopButton.TabIndex = 52;
+            stopButton.Text = "Завершить смену";
+            stopButton.UseVisualStyleBackColor = false;
+            stopButton.Click += stopButton_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1099, 584);
+            Controls.Add(stopButton);
             Controls.Add(groupBox3);
             Controls.Add(testLabel);
             Controls.Add(label13);
@@ -802,5 +815,6 @@
         private Label busRemainsLabel;
         private Label label6;
         private Label label5;
+        private Button stopButton;
     }
 }
