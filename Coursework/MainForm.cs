@@ -47,6 +47,8 @@ namespace Coursework
 
         private void CreateBusForms()
         {
+            flowLayoutPanel1.Controls.Clear();
+
             int ct = 0;
             foreach (var bus in buses)
             {
@@ -85,6 +87,7 @@ namespace Coursework
                 transportChangeButton.TabIndex = 3;
                 transportChangeButton.Text = "Изменить";
                 transportChangeButton.UseVisualStyleBackColor = true;
+                transportChangeButton.Click += transportChangeButtons_Click;
 
                 transportAmount.AutoSize = true;
                 transportAmount.Location = new Point(188, 14);
@@ -212,26 +215,26 @@ namespace Coursework
                         }
                         else if (now.Hours < 7 || now.Hours >= 21)
                         {
-                            passengers[i] += random.Next(1, 5);
+                            passengers[i] += random.Next(0, 2);
                         }
                         else
                         {
-                            passengers[i] += random.Next(0, 2);
+                            passengers[i] += random.Next(0, 5);
                         }
                     }
                     else
                     {
-                        if (now.Hours < 7 || now.Hours >= 21)
+                        if (now.Hours < 9 || now.Hours >= 21)
                         {
-                            passengers[i] += random.Next(0, 4);
+                            passengers[i] += random.Next(0, 3);
                         }
                         else
                         {
-                            passengers[i] += random.Next(0, 2);
+                            passengers[i] += random.Next(0, 5);
                         }
                     }
 
-                    passengers[i] = Math.Min(passengers[i], 15);
+                    passengers[i] = Math.Min(passengers[i], 20);
                 }
             }
         }
@@ -320,6 +323,7 @@ namespace Coursework
             transportChangeButton.TabIndex = 3;
             transportChangeButton.Text = "Изменить";
             transportChangeButton.UseVisualStyleBackColor = true;
+            transportChangeButton.Click += transportChangeButtons_Click;
 
             transportAmount.AutoSize = true;
             transportAmount.Location = new Point(188, 14);
@@ -411,6 +415,57 @@ namespace Coursework
             }
 
             this.TopMost = true;
+        }
+
+        private void RemoveBus(int index)
+        {
+            if (index >= 0 && index < buses.Count)
+            {
+                buses.RemoveAt(index);
+
+                flowLayoutPanel1.Controls.RemoveAt(index);
+                for (int i = index; i < flowLayoutPanel1.Controls.Count; i++)
+                {
+                    string newName = $"transportPanel_{i}";
+                    flowLayoutPanel1.Controls[i].Name = newName;
+                    foreach (Control control in flowLayoutPanel1.Controls[i].Controls)
+                    {
+                        if (control.Name.StartsWith("transport"))
+                        {
+                            control.Name = control.Name.Replace($"_{i + 1}", $"_{i}");
+                        }
+                    }
+                }
+            }
+        }
+
+        private void transportChangeButtons_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Button clickedButton = sender as System.Windows.Forms.Button;
+            string buttonName = clickedButton.Name;
+            int index = int.Parse(buttonName.Split('_').Last());
+
+            testLabel.Text = index.ToString();
+
+            if (index >= 0 && index < buses.Count)
+            {
+                if (buses[index].Type == "Автобус")
+                {
+                    busRemains++;
+                    busRemainsLabel.Text = busRemains.ToString();
+                    if (busRemains == 0) busRemainsLabel.ForeColor = Control.DefaultForeColor;
+                }
+                else
+                {
+                    minibusRemains++;
+                    minibusRemainsLabel.Text = minibusRemains.ToString();
+                    if (minibusRemains == 0) busRemainsLabel.ForeColor = Control.DefaultForeColor;
+                }
+
+                buses.RemoveAt(index);
+
+                CreateBusForms();
+            }
         }
     }
 }

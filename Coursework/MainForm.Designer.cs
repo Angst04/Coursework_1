@@ -70,7 +70,6 @@
             transportPanel = new Panel();
             transportProgressBar = new ProgressBar();
             transportCurrentStop = new Label();
-            transportChangeButton = new Button();
             transportAmount = new Label();
             transportDeparture = new Label();
             transportType = new Label();
@@ -462,7 +461,6 @@
             transportPanel.BackColor = Color.FromArgb(255, 224, 192);
             transportPanel.Controls.Add(transportProgressBar);
             transportPanel.Controls.Add(transportCurrentStop);
-            transportPanel.Controls.Add(transportChangeButton);
             transportPanel.Controls.Add(transportAmount);
             transportPanel.Controls.Add(transportDeparture);
             transportPanel.Controls.Add(transportType);
@@ -486,15 +484,6 @@
             transportCurrentStop.Size = new Size(13, 15);
             transportCurrentStop.TabIndex = 4;
             transportCurrentStop.Text = "1";
-            // 
-            // transportChangeButton
-            // 
-            transportChangeButton.Location = new Point(743, 10);
-            transportChangeButton.Name = "transportChangeButton";
-            transportChangeButton.Size = new Size(75, 23);
-            transportChangeButton.TabIndex = 3;
-            transportChangeButton.Text = "Изменить";
-            transportChangeButton.UseVisualStyleBackColor = true;
             // 
             // transportAmount
             // 
@@ -805,7 +794,6 @@
         private Panel transportPanel;
         private ProgressBar transportProgressBar;
         private Label transportCurrentStop;
-        private Button transportChangeButton;
         private Label transportAmount;
         private Label transportDeparture;
         private Label transportType;
