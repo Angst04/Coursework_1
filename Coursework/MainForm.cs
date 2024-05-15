@@ -41,6 +41,20 @@ namespace Coursework
 
             this.FormClosing += new FormClosingEventHandler(MainForm_Closing);
         }
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            TimeSpan elapsedTime = TimeSpan.FromSeconds(1);
+            currentTime = currentTime.Add(elapsedTime.Multiply(timeMultiplier));
+
+            nowTime.Text = new DateTime(currentTime.Ticks).ToString("HH:mm");
+
+            UpdateBusProgress(currentTime);
+
+            if (currentTime.Hours == 20)
+            {
+                OnEndOfDay();
+            }
+        }
 
         private void InitializeBuses()
         {
@@ -52,6 +66,269 @@ namespace Coursework
             buses.Add(new Bus("Маршрутка", new TimeSpan(9, 20, 0)));
             buses.Add(new Bus("Маршрутка", new TimeSpan(9, 30, 0)));
             buses.Add(new Bus("Маршрутка", new TimeSpan(10, 30, 0)));
+        }
+        private void InitializePassengerCounts()
+        {
+            for (int i = 0; i < passengers.Length; i++)
+            {
+                passengers[i] = 0;
+                UpdatePassengerLabel(i);
+            }
+        }
+
+        private void CreateBusForms()
+        {
+            flowLayoutPanel1.Controls.Clear();
+
+            int ct = 0;
+            foreach (var bus in buses)
+            {
+                BusForm(ct, bus);
+                ct++;
+            }
+        }
+        
+        private void UpdateBusProgress(TimeSpan currentTime)
+        {
+            UpdatePassengerCounts(currentTime);
+
+            for (int i = buses.Count - 1; i >= 0; i--)
+            {
+                var bus = buses[i];
+
+                string progressBarName = $"transportProgressBar_{i}";
+                string currentStopName = $"transportCurrentStop_{i}";
+                string amountLabelName = $"transportAmount_{i}";
+                string departureLabelName = $"transportDeparture_{i}";
+
+                TimeSpan timeToNextStop = bus.DepartureTime - currentTime;
+
+                System.Windows.Forms.ProgressBar transportProgressBar = flowLayoutPanel1.Controls.Find(progressBarName, true).FirstOrDefault() as System.Windows.Forms.ProgressBar;
+                Label transportCurrentStop = flowLayoutPanel1.Controls.Find(currentStopName, true).FirstOrDefault() as Label;
+                Label transportAmount = flowLayoutPanel1.Controls.Find(amountLabelName, true).FirstOrDefault() as Label;
+                Label transportDeparture = flowLayoutPanel1.Controls.Find(departureLabelName, true).FirstOrDefault() as Label;
+
+                int progressValue = (int)((timeToNextStop.TotalMinutes / bus.TimeBetweenStops) * 100);
+
+                if (transportProgressBar != null && progressValue <= 100 && progressValue >= 0)
+                {
+                    transportProgressBar.Value = progressValue;
+                }
+
+                int total = 50;
+                if (bus.Type == "Маршрутка") total = 25;
+                if (currentTime >= bus.DepartureTime)
+                {
+                    if (!bus.IsAtLastStop())
+                    {
+                        bus.MoveToNextStop(currentTime);
+
+                        int passengersToBoard = Math.Min(passengers[bus.CurrentStop - 1], total - bus.PassengersAmount);
+
+                        passengers[bus.CurrentStop - 1] -= passengersToBoard;
+
+                        int passengersToLeave = random.Next(2, 10);
+                        passengersToLeave = Math.Min(passengersToLeave, bus.PassengersAmount);
+
+                        bus.PassengersAmount += passengersToBoard;
+                        bus.PassengersAmount -= passengersToLeave;
+                        UpdatePassengerLabel(i);
+
+                        transportCurrentStop.Text = bus.CurrentStop.ToString();
+                    }
+                    else
+                    {
+                        bus.DepartureTime = currentTime.Add(TimeSpan.FromMinutes(60));
+                        bus.CurrentStop = 0;
+                        bus.PassengersAmount = 0;
+                        transportDeparture.Text = DateTime.Today.Add(bus.DepartureTime).ToString("HH:mm");
+                        transportCurrentStop.Text = "Возврат на 1";
+                    }
+                    transportAmount.Text = bus.PassengersAmount.ToString() + "/" + total.ToString();
+                }
+            }
+        }
+
+        private void UpdatePassengerLabel(int stopIndex)
+        {
+            if (stopIndex >= 0 && stopIndex < passengers.Length)
+            {
+                Controls["passCount" + (stopIndex + 1)].Text = passengers[stopIndex].ToString();
+            }
+        }
+
+        private void UpdatePassengerCounts(TimeSpan now)
+        {
+            for (int i = 0; i < passengers.Length; i++)
+            {
+                UpdatePassengerLabel(i);
+
+                StopSettings(now, i);
+            }
+        }
+
+        public void StopSettings(TimeSpan now, int i)
+        {
+            if (now.Minutes % 30 == 0)
+            {
+                if (nowDateType.Text == "будний")
+                {
+                    if ((now.Hours >= 7 && now.Hours < 10) || (now.Hours >= 18 && now.Hours < 21))
+                    {
+                        passengers[i] += random.Next(2, 5);
+                    }
+                    else if (now.Hours < 7 || now.Hours >= 21)
+                    {
+                        passengers[i] += random.Next(0, 2);
+                    }
+                    else
+                    {
+                        passengers[i] += random.Next(0, 5);
+                    }
+                }
+                else
+                {
+                    if (now.Hours < 9 || now.Hours >= 21)
+                    {
+                        passengers[i] += random.Next(0, 3);
+                    }
+                    else
+                    {
+                        passengers[i] += random.Next(0, 5);
+                    }
+                }
+
+                passengers[i] = Math.Min(passengers[i], 30);
+                if (passengers[i] == 30) Controls["passCount" + (i + 1)].ForeColor = Color.Red;
+                else Controls["passCount" + (i + 1)].ForeColor = Control.DefaultForeColor;
+            }
+        }
+
+        public void AddNewBus(string type, int timeBetweenStops)
+        {
+            int currentStop = 0;
+            if (radioButton2.Checked) currentStop = 1;
+            else if (radioButton3.Checked) currentStop = 2;
+            else if (radioButton4.Checked) currentStop = 3;
+            else if (radioButton5.Checked) currentStop = 4;
+            else if (radioButton6.Checked) currentStop = 5;
+
+            buses.Add(new Bus(type, TimeSpan.FromHours(currentTime.TotalHours), timeBetweenStops, currentStop));
+
+            int ct = buses.Count() - 1;
+            var bus = buses[ct];
+            BusForm(ct, bus);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string type;
+            int timeBetweenStops;
+            if (busRemains > 0 && radioButton12.Checked)
+            {
+                type = "Автобус";
+                timeBetweenStops = 45;
+                busRemains--;
+                busRemainsLabel.Text = busRemains.ToString();
+                if (busRemains == 0) busRemainsLabel.ForeColor = Color.Red;
+                AddNewBus(type, timeBetweenStops);
+            }
+            else if (minibusRemains > 0 && radioButton11.Checked)
+            {
+                type = "Маршрутка";
+                timeBetweenStops = 30;
+                minibusRemains--;
+                minibusRemainsLabel.Text = minibusRemains.ToString();
+                if (minibusRemains == 0) minibusRemainsLabel.ForeColor = Color.Red;
+                AddNewBus(type, timeBetweenStops);
+            }
+            else
+            {
+                DialogResult result = MessageBox.Show(
+                "Выбранный транспорт не доступен. Обратите внимание на доступный транспорт",
+                "Предупреждение");
+            }
+
+        }
+
+        private void transportChangeButtons_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Button clickedButton = sender as System.Windows.Forms.Button;
+            string buttonName = clickedButton.Name;
+            int index = int.Parse(buttonName.Split('_').Last());
+
+            if (index >= 0 && index < buses.Count)
+            {
+                if (buses[index].Type == "Автобус")
+                {
+                    busRemains++;
+                    busRemainsLabel.Text = busRemains.ToString();
+                    if (busRemains > 0) busRemainsLabel.ForeColor = Control.DefaultForeColor;
+                }
+                else
+                {
+                    minibusRemains++;
+                    minibusRemainsLabel.Text = minibusRemains.ToString();
+                    if (minibusRemains > 0) minibusRemainsLabel.ForeColor = Control.DefaultForeColor;
+                }
+
+                buses.RemoveAt(index);
+
+                CreateBusForms();
+            }
+        }
+
+        private void startButton_Click(object sender, EventArgs e)
+        {
+            if (startButton.Text == "Пауза")
+            {
+                mainTimer.Stop();
+                startButton.Text = "Продолжить";
+            }
+            else
+            {
+                mainTimer.Start();
+                startButton.Text = "Пауза";
+                startButton.BackColor = Control.DefaultBackColor;
+            }
+        }
+
+        private void stopButton_Click(object sender, EventArgs e)
+        {
+            mainTimer.Stop();
+
+            DialogResult result = MessageBox.Show(
+            "Вы уверены, что хотите завершить смену? Это действие вернёт вас в стартовое меню",
+            "Предупреждение",
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Information,
+            MessageBoxDefaultButton.Button1,
+            MessageBoxOptions.DefaultDesktopOnly);
+
+            if (result == DialogResult.Yes)
+                Application.Restart();
+            else if (startButton.Text == "Пауза")
+            {
+                mainTimer.Start();
+            }
+
+            this.TopMost = true;
+        }
+
+        private void OnEndOfDay()
+        {
+            mainTimer.Stop();
+
+            DialogResult result = MessageBox.Show(
+                "Ваша смена завершена. Вы будете возвращены в стартовое меню.",
+                "Смена завершена");
+
+            Application.Restart();
+        }
+
+        private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Application.Exit();
         }
 
         private void BusForm(int ct, dynamic bus)
@@ -124,286 +401,6 @@ namespace Coursework
             transportPanel.Controls.Add(transportType);
 
             flowLayoutPanel1.Controls.Add(transportPanel);
-        }
-
-        private void CreateBusForms()
-        {
-            flowLayoutPanel1.Controls.Clear();
-
-            int ct = 0;
-            foreach (var bus in buses)
-            {
-                BusForm(ct, bus);
-                ct++;
-            }
-        }
-
-        private void UpdateBusProgress(TimeSpan currentTime)
-        {
-            UpdatePassengerCounts(currentTime);
-
-            for (int i = buses.Count - 1; i >= 0; i--)
-            {
-                var bus = buses[i];
-
-                string progressBarName = $"transportProgressBar_{i}";
-                string currentStopName = $"transportCurrentStop_{i}";
-                string amountLabelName = $"transportAmount_{i}";
-                string departureLabelName = $"transportDeparture_{i}";
-
-                TimeSpan timeToNextStop = bus.DepartureTime - currentTime;
-
-                System.Windows.Forms.ProgressBar transportProgressBar = flowLayoutPanel1.Controls.Find(progressBarName, true).FirstOrDefault() as System.Windows.Forms.ProgressBar;
-                Label transportCurrentStop = flowLayoutPanel1.Controls.Find(currentStopName, true).FirstOrDefault() as Label;
-                Label transportAmount = flowLayoutPanel1.Controls.Find(amountLabelName, true).FirstOrDefault() as Label;
-                Label transportDeparture = flowLayoutPanel1.Controls.Find(departureLabelName, true).FirstOrDefault() as Label;
-
-                int progressValue = (int)((timeToNextStop.TotalMinutes / bus.TimeBetweenStops) * 100);
-
-                if (transportProgressBar != null && progressValue <= 100 && progressValue >= 0)
-                {
-                    transportProgressBar.Value = progressValue;
-                }
-
-                int total = 50;
-                if (bus.Type == "Маршрутка") total = 25;
-                if (currentTime >= bus.DepartureTime)
-                {
-                    if (!bus.IsAtLastStop())
-                    {
-                        bus.MoveToNextStop(currentTime);
-
-                        int passengersToBoard = Math.Min(passengers[bus.CurrentStop - 1], total - bus.PassengersAmount);
-
-                        passengers[bus.CurrentStop - 1] -= passengersToBoard;
-
-                        int passengersToLeave = random.Next(2, 10);
-                        passengersToLeave = Math.Min(passengersToLeave, bus.PassengersAmount);
-
-                        bus.PassengersAmount += passengersToBoard;
-                        bus.PassengersAmount -= passengersToLeave;
-                        UpdatePassengerLabel(i);
-
-                        transportCurrentStop.Text = bus.CurrentStop.ToString();
-                    }
-                    else
-                    {
-                        bus.DepartureTime = currentTime.Add(TimeSpan.FromMinutes(60));
-                        bus.CurrentStop = 0;
-                        bus.PassengersAmount = 0;
-                        transportDeparture.Text = DateTime.Today.Add(bus.DepartureTime).ToString("HH:mm");
-                        transportCurrentStop.Text = "Возврат на 1";
-                    }
-                    transportAmount.Text = bus.PassengersAmount.ToString() + "/" + total.ToString();
-                }
-            }
-        }
-
-
-        private void InitializePassengerCounts()
-        {
-            for (int i = 0; i < passengers.Length; i++)
-            {
-                passengers[i] = 0;
-                UpdatePassengerLabel(i);
-            }
-        }
-
-        private void UpdatePassengerLabel(int stopIndex)
-        {
-            if (stopIndex >= 0 && stopIndex < passengers.Length)
-            {
-                Controls["passCount" + (stopIndex + 1)].Text = passengers[stopIndex].ToString();
-            }
-        }
-
-        private void UpdatePassengerCounts(TimeSpan now)
-        {
-            for (int i = 0; i < passengers.Length; i++)
-            {
-                UpdatePassengerLabel(i);
-
-                StopSettings(now, i);
-            }
-        }
-
-        public void StopSettings(TimeSpan now, int i)
-        {
-            if (now.Minutes % 30 == 0)
-            {
-                if (nowDateType.Text == "будний")
-                {
-                    if ((now.Hours >= 7 && now.Hours < 10) || (now.Hours >= 18 && now.Hours < 21))
-                    {
-                        passengers[i] += random.Next(2, 5);
-                    }
-                    else if (now.Hours < 7 || now.Hours >= 21)
-                    {
-                        passengers[i] += random.Next(0, 2);
-                    }
-                    else
-                    {
-                        passengers[i] += random.Next(0, 5);
-                    }
-                }
-                else
-                {
-                    if (now.Hours < 9 || now.Hours >= 21)
-                    {
-                        passengers[i] += random.Next(0, 3);
-                    }
-                    else
-                    {
-                        passengers[i] += random.Next(0, 5);
-                    }
-                }
-
-                passengers[i] = Math.Min(passengers[i], 30);
-                if (passengers[i] == 30) Controls["passCount" + (i + 1)].ForeColor = Color.Red;
-                else Controls["passCount" + (i + 1)].ForeColor = Control.DefaultForeColor;
-            }
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            TimeSpan elapsedTime = TimeSpan.FromSeconds(1);
-            currentTime = currentTime.Add(elapsedTime.Multiply(timeMultiplier));
-
-            nowTime.Text = new DateTime(currentTime.Ticks).ToString("HH:mm");
-
-            UpdateBusProgress(currentTime);
-
-            if (currentTime.Hours == 20)
-            {
-                OnEndOfDay();
-            }
-        }
-
-        private void startButton_Click(object sender, EventArgs e)
-        {
-            if (startButton.Text == "Пауза")
-            {
-                mainTimer.Stop();
-                startButton.Text = "Продолжить";
-            }
-            else
-            {
-                mainTimer.Start();
-                startButton.Text = "Пауза";
-                startButton.BackColor = Control.DefaultBackColor;
-            }
-        }
-
-        public void AddNewBus(string type, int timeBetweenStops)
-        {
-            int currentStop = 0;
-            if (radioButton2.Checked) currentStop = 1;
-            else if (radioButton3.Checked) currentStop = 2;
-            else if (radioButton4.Checked) currentStop = 3;
-            else if (radioButton5.Checked) currentStop = 4;
-            else if (radioButton6.Checked) currentStop = 5;
-
-            buses.Add(new Bus(type, TimeSpan.FromHours(currentTime.TotalHours), timeBetweenStops, currentStop));
-
-            int ct = buses.Count() - 1;
-            var bus = buses[ct];
-            BusForm(ct, bus);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            string type;
-            int timeBetweenStops;
-            if (busRemains > 0 && radioButton12.Checked)
-            {
-                type = "Автобус";
-                timeBetweenStops = 45;
-                busRemains--;
-                busRemainsLabel.Text = busRemains.ToString();
-                if (busRemains == 0) busRemainsLabel.ForeColor = Color.Red;
-                AddNewBus(type, timeBetweenStops);
-            }
-            else if (minibusRemains > 0 && radioButton11.Checked)
-            {
-                type = "Маршрутка";
-                timeBetweenStops = 30;
-                minibusRemains--;
-                minibusRemainsLabel.Text = minibusRemains.ToString();
-                if (minibusRemains == 0) minibusRemainsLabel.ForeColor = Color.Red;
-                AddNewBus(type, timeBetweenStops);
-            }
-            else
-            {
-                DialogResult result = MessageBox.Show(
-                "Выбранный транспорт не доступен. Обратите внимание на доступный транспорт",
-                "Предупреждение");
-            }
-
-        }
-
-        private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void stopButton_Click(object sender, EventArgs e)
-        {
-            mainTimer.Stop();
-
-            DialogResult result = MessageBox.Show(
-            "Вы уверены, что хотите завершить смену? Это действие вернёт вас в стартовое меню",
-            "Предупреждение",
-            MessageBoxButtons.YesNo,
-            MessageBoxIcon.Information,
-            MessageBoxDefaultButton.Button1,
-            MessageBoxOptions.DefaultDesktopOnly);
-
-            if (result == DialogResult.Yes)
-                Application.Restart();
-            else if (startButton.Text == "Пауза")
-            {
-                mainTimer.Start();
-            }
-
-            this.TopMost = true;
-        }
-
-        private void transportChangeButtons_Click(object sender, EventArgs e)
-        {
-            System.Windows.Forms.Button clickedButton = sender as System.Windows.Forms.Button;
-            string buttonName = clickedButton.Name;
-            int index = int.Parse(buttonName.Split('_').Last());
-
-            if (index >= 0 && index < buses.Count)
-            {
-                if (buses[index].Type == "Автобус")
-                {
-                    busRemains++;
-                    busRemainsLabel.Text = busRemains.ToString();
-                    if (busRemains > 0) busRemainsLabel.ForeColor = Control.DefaultForeColor;
-                }
-                else
-                {
-                    minibusRemains++;
-                    minibusRemainsLabel.Text = minibusRemains.ToString();
-                    if (minibusRemains > 0) minibusRemainsLabel.ForeColor = Control.DefaultForeColor;
-                }
-
-                buses.RemoveAt(index);
-
-                CreateBusForms();
-            }
-        }
-
-        private void OnEndOfDay()
-        {
-            mainTimer.Stop();
-
-            DialogResult result = MessageBox.Show(
-                "Ваша смена завершена. Вы будете возвращены в стартовое меню.",
-                "Смена завершена");
-
-            Application.Restart();
         }
     }
 }

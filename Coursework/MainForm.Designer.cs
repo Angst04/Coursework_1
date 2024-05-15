@@ -766,8 +766,10 @@
             Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Margin = new Padding(4, 3, 4, 3);
+            MaximizeBox = false;
             Name = "MainForm";
-            Text = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Контроль расписания";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();

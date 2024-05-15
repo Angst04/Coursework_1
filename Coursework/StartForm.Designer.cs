@@ -95,9 +95,10 @@
             Controls.Add(label1);
             Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "StartForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Start";
+            Text = "Начало смены";
             ResumeLayout(false);
             PerformLayout();
         }
