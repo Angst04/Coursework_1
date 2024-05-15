@@ -1,11 +1,11 @@
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Collections.Generic;
-
-using ClassLibrary1;
 using System;
 using System.Reflection;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
+
+using ClassLibrary1;
 
 namespace Coursework
 {
@@ -41,8 +41,8 @@ namespace Coursework
         private void InitializeBuses()
         {
             buses.Add(new Bus("Автобус", TimeSpan.FromHours(1)));
-            buses.Add(new Bus("Маршрутка", TimeSpan.FromHours(2)));
-            buses.Add(new Bus("Автобус", TimeSpan.FromHours(3)));
+            buses.Add(new Bus("Маршрутка", TimeSpan.FromHours(1)));
+            buses.Add(new Bus("Автобус", TimeSpan.FromHours(1)));
         }
 
         private void BusForm(int ct, dynamic bus)
@@ -96,7 +96,7 @@ namespace Coursework
             transportDeparture.Name = $"transportDeparture_{ct}";
             transportDeparture.Size = new Size(34, 15);
             transportDeparture.TabIndex = 1;
-            transportDeparture.Text = DateTime.Today.Add(bus.DepartureTime).ToString("HH:mm");
+            transportDeparture.Text = DateTime.Today.Add(bus.DepartureTime - TimeSpan.FromMinutes(bus.TimeBetweenStops)).ToString("HH:mm");
 
 
             transportType.AutoSize = true;
@@ -138,19 +138,19 @@ namespace Coursework
 
                 string progressBarName = $"transportProgressBar_{i}";
                 string currentStopName = $"transportCurrentStop_{i}";
-                string changeButtonName = $"transportChangeButton_{i}";
+                //string changeButtonName = $"transportChangeButton_{i}";
                 string amountLabelName = $"transportAmount_{i}";
                 string departureLabelName = $"transportDeparture_{i}";
-                string typeName = $"transportType_{i}";
+                //string typeName = $"transportType_{i}";
 
                 TimeSpan timeToNextStop = bus.DepartureTime - currentTime;
 
                 System.Windows.Forms.ProgressBar transportProgressBar = flowLayoutPanel1.Controls.Find(progressBarName, true).FirstOrDefault() as System.Windows.Forms.ProgressBar;
                 Label transportCurrentStop = flowLayoutPanel1.Controls.Find(currentStopName, true).FirstOrDefault() as Label;
-                System.Windows.Forms.Button transportChangeButton = flowLayoutPanel1.Controls.Find(changeButtonName, true).FirstOrDefault() as System.Windows.Forms.Button;
+                //System.Windows.Forms.Button transportChangeButton = flowLayoutPanel1.Controls.Find(changeButtonName, true).FirstOrDefault() as System.Windows.Forms.Button;
                 Label transportAmount = flowLayoutPanel1.Controls.Find(amountLabelName, true).FirstOrDefault() as Label;
                 Label transportDeparture = flowLayoutPanel1.Controls.Find(departureLabelName, true).FirstOrDefault() as Label;
-                Label transportType = flowLayoutPanel1.Controls.Find(typeName, true).FirstOrDefault() as Label;
+                //Label transportType = flowLayoutPanel1.Controls.Find(typeName, true).FirstOrDefault() as Label;
 
                 int progressValue = (int)((timeToNextStop.TotalMinutes / bus.TimeBetweenStops) * 100);
 
@@ -172,15 +172,17 @@ namespace Coursework
                         passengers[bus.CurrentStop - 1] -= passengersToBoard;
                         bus.PassengersAmount += passengersToBoard;
                         UpdatePassengerLabel(i);
+
+                        transportCurrentStop.Text = bus.CurrentStop.ToString();
                     }
                     else
                     {
                         bus.DepartureTime = currentTime.Add(TimeSpan.FromMinutes(60));
-                        bus.CurrentStop = 1;
+                        bus.CurrentStop = 0;
                         bus.PassengersAmount = 0;
                         transportDeparture.Text = DateTime.Today.Add(bus.DepartureTime).ToString("HH:mm");
+                        transportCurrentStop.Text = "Депо";
                     }
-                    transportCurrentStop.Text = bus.CurrentStop.ToString();
                     transportAmount.Text = bus.PassengersAmount.ToString() + "/" + total.ToString();
                 }
             }
@@ -271,14 +273,14 @@ namespace Coursework
 
         public void AddNewBus(string type, int timeBetweenStops)
         {
-            int currentStop = 1;
-            if (radioButton2.Checked) currentStop = 2;
-            else if (radioButton3.Checked) currentStop = 3;
-            else if (radioButton4.Checked) currentStop = 4;
-            else if (radioButton5.Checked) currentStop = 5;
-            else if (radioButton6.Checked) currentStop = 6;
+            int currentStop = 0;
+            if (radioButton2.Checked) currentStop = 1;
+            else if (radioButton3.Checked) currentStop = 2;
+            else if (radioButton4.Checked) currentStop = 3;
+            else if (radioButton5.Checked) currentStop = 4;
+            else if (radioButton6.Checked) currentStop = 5;
 
-            buses.Add(new Bus(type, TimeSpan.FromHours(currentTime.TotalHours).Add(TimeSpan.FromMinutes(timeBetweenStops)), timeBetweenStops, currentStop));
+            buses.Add(new Bus(type, TimeSpan.FromHours(currentTime.TotalHours), timeBetweenStops, currentStop));
 
             int ct = buses.Count() - 1;
             var bus = buses[ct];

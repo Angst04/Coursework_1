@@ -89,6 +89,7 @@
             label6 = new Label();
             label5 = new Label();
             stopButton = new Button();
+            testLabel2 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -669,11 +670,21 @@
             stopButton.UseVisualStyleBackColor = false;
             stopButton.Click += stopButton_Click;
             // 
+            // testLabel2
+            // 
+            testLabel2.AutoSize = true;
+            testLabel2.Location = new Point(88, 310);
+            testLabel2.Name = "testLabel2";
+            testLabel2.Size = new Size(52, 15);
+            testLabel2.TabIndex = 53;
+            testLabel2.Text = "Отладка";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1099, 584);
+            Controls.Add(testLabel2);
             Controls.Add(stopButton);
             Controls.Add(groupBox3);
             Controls.Add(testLabel);
@@ -797,5 +808,6 @@
         private Label label6;
         private Label label5;
         private Button stopButton;
+        private Label testLabel2;
     }
 }
