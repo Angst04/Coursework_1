@@ -478,12 +478,12 @@
             // 
             // transportCurrentStop
             // 
-            transportCurrentStop.AutoSize = true;
-            transportCurrentStop.Location = new Point(287, 14);
+            transportCurrentStop.Location = new Point(266, 10);
             transportCurrentStop.Name = "transportCurrentStop";
-            transportCurrentStop.Size = new Size(13, 15);
+            transportCurrentStop.Size = new Size(116, 23);
             transportCurrentStop.TabIndex = 4;
             transportCurrentStop.Text = "1";
+            transportCurrentStop.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // transportAmount
             // 
@@ -587,7 +587,7 @@
             // 
             label12.Location = new Point(451, 7);
             label12.Name = "label12";
-            label12.Size = new Size(76, 35);
+            label12.Size = new Size(139, 35);
             label12.TabIndex = 48;
             label12.Text = "№ текущей остановки";
             label12.TextAlign = ContentAlignment.MiddleCenter;

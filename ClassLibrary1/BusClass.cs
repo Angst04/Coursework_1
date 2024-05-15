@@ -1,7 +1,8 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Xml.Linq;
 
-namespace ClassLibrary1
+namespace BusClassLibrary
 {
     public class Bus
     {

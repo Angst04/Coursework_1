@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coursework", "Coursework\Coursework.csproj", "{DE3F8DEA-4102-4DB0-AAEA-7D59174F4935}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary1", "ClassLibrary1\ClassLibrary1.csproj", "{A373E169-FC61-4777-A589-F329DF8E08EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusClassLibrary", "ClassLibrary1\BusClassLibrary.csproj", "{A373E169-FC61-4777-A589-F329DF8E08EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

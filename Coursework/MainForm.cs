@@ -5,22 +5,22 @@ using System;
 using System.Reflection;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
 
-using ClassLibrary1;
+using BusClassLibrary;
 
 namespace Coursework
 {
     public partial class MainForm : Form
     {
         private TimeSpan currentTime = TimeSpan.Zero;
-        private const int timeMultiplier = 30;
+        private const int timeMultiplier = 60;
 
         private Random random = new Random();
         private int[] passengers = new int[6];
 
         private List<Bus> buses = new List<Bus>();
 
-        private int busRemains = 3;
-        private int minibusRemains = 3;
+        private int busRemains = 2;
+        private int minibusRemains = 2;
 
         public MainForm()
         {
@@ -42,7 +42,6 @@ namespace Coursework
         {
             buses.Add(new Bus("Автобус", TimeSpan.FromHours(1)));
             buses.Add(new Bus("Маршрутка", TimeSpan.FromHours(1)));
-            buses.Add(new Bus("Автобус", TimeSpan.FromHours(1)));
         }
 
         private void BusForm(int ct, dynamic bus)
@@ -75,6 +74,7 @@ namespace Coursework
             transportCurrentStop.Size = new Size(13, 15);
             transportCurrentStop.TabIndex = 4;
             transportCurrentStop.Text = bus.CurrentStop.ToString();
+            if (bus.CurrentStop == 0) transportCurrentStop.Text = "Депо";
 
             transportChangeButton.Location = new Point(743, 10);
             transportChangeButton.Name = $"transportChangeButton_{ct}";
@@ -138,19 +138,15 @@ namespace Coursework
 
                 string progressBarName = $"transportProgressBar_{i}";
                 string currentStopName = $"transportCurrentStop_{i}";
-                //string changeButtonName = $"transportChangeButton_{i}";
                 string amountLabelName = $"transportAmount_{i}";
                 string departureLabelName = $"transportDeparture_{i}";
-                //string typeName = $"transportType_{i}";
 
                 TimeSpan timeToNextStop = bus.DepartureTime - currentTime;
 
                 System.Windows.Forms.ProgressBar transportProgressBar = flowLayoutPanel1.Controls.Find(progressBarName, true).FirstOrDefault() as System.Windows.Forms.ProgressBar;
                 Label transportCurrentStop = flowLayoutPanel1.Controls.Find(currentStopName, true).FirstOrDefault() as Label;
-                //System.Windows.Forms.Button transportChangeButton = flowLayoutPanel1.Controls.Find(changeButtonName, true).FirstOrDefault() as System.Windows.Forms.Button;
                 Label transportAmount = flowLayoutPanel1.Controls.Find(amountLabelName, true).FirstOrDefault() as Label;
                 Label transportDeparture = flowLayoutPanel1.Controls.Find(departureLabelName, true).FirstOrDefault() as Label;
-                //Label transportType = flowLayoutPanel1.Controls.Find(typeName, true).FirstOrDefault() as Label;
 
                 int progressValue = (int)((timeToNextStop.TotalMinutes / bus.TimeBetweenStops) * 100);
 
@@ -181,7 +177,7 @@ namespace Coursework
                         bus.CurrentStop = 0;
                         bus.PassengersAmount = 0;
                         transportDeparture.Text = DateTime.Today.Add(bus.DepartureTime).ToString("HH:mm");
-                        transportCurrentStop.Text = "Депо";
+                        transportCurrentStop.Text = "Возврат на 1";
                     }
                     transportAmount.Text = bus.PassengersAmount.ToString() + "/" + total.ToString();
                 }
@@ -212,40 +208,44 @@ namespace Coursework
             {
                 UpdatePassengerLabel(i);
 
-                if (now.Minutes % 20 == 0)
-                {
-                    if (nowDateType.Text == "будний")
-                    {
-                        if ((now.Hours >= 7 && now.Hours < 10) || (now.Hours >= 18 && now.Hours < 21))
-                        {
-                            passengers[i] += random.Next(3, 7);
-                        }
-                        else if (now.Hours < 7 || now.Hours >= 21)
-                        {
-                            passengers[i] += random.Next(0, 2);
-                        }
-                        else
-                        {
-                            passengers[i] += random.Next(0, 5);
-                        }
-                    }
-                    else
-                    {
-                        if (now.Hours < 9 || now.Hours >= 21)
-                        {
-                            passengers[i] += random.Next(0, 3);
-                        }
-                        else
-                        {
-                            passengers[i] += random.Next(0, 5);
-                        }
-                    }
-
-                    passengers[i] = Math.Min(passengers[i], 20);
-                }
+                StopSettings(now, i);
             }
         }
 
+        public void StopSettings(TimeSpan now, int i)
+        {
+            if (now.Minutes % 20 == 0)
+            {
+                if (nowDateType.Text == "будний")
+                {
+                    if ((now.Hours >= 7 && now.Hours < 10) || (now.Hours >= 18 && now.Hours < 21))
+                    {
+                        passengers[i] += random.Next(3, 7);
+                    }
+                    else if (now.Hours < 7 || now.Hours >= 21)
+                    {
+                        passengers[i] += random.Next(0, 2);
+                    }
+                    else
+                    {
+                        passengers[i] += random.Next(0, 5);
+                    }
+                }
+                else
+                {
+                    if (now.Hours < 9 || now.Hours >= 21)
+                    {
+                        passengers[i] += random.Next(0, 3);
+                    }
+                    else
+                    {
+                        passengers[i] += random.Next(0, 5);
+                    }
+                }
+
+                passengers[i] = Math.Min(passengers[i], 20);
+            }
+        }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
@@ -363,7 +363,7 @@ namespace Coursework
                 {
                     minibusRemains++;
                     minibusRemainsLabel.Text = minibusRemains.ToString();
-                    if (minibusRemains > 0) busRemainsLabel.ForeColor = Control.DefaultForeColor;
+                    if (minibusRemains > 0) minibusRemainsLabel.ForeColor = Control.DefaultForeColor;
                 }
 
                 buses.RemoveAt(index);
