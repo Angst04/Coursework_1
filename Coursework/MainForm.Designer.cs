@@ -73,7 +73,6 @@
             transportAmount = new Label();
             transportDeparture = new Label();
             transportType = new Label();
-            closeButton = new Button();
             groupBox2 = new GroupBox();
             radioButton11 = new RadioButton();
             radioButton12 = new RadioButton();
@@ -410,12 +409,13 @@
             // 
             // startButton
             // 
+            startButton.BackColor = Color.FromArgb(128, 255, 128);
             startButton.Location = new Point(72, 163);
             startButton.Name = "startButton";
             startButton.Size = new Size(91, 38);
             startButton.TabIndex = 28;
             startButton.Text = "Начать смену";
-            startButton.UseVisualStyleBackColor = true;
+            startButton.UseVisualStyleBackColor = false;
             startButton.Click += startButton_Click;
             // 
             // nowDate
@@ -511,17 +511,6 @@
             transportType.Size = new Size(52, 15);
             transportType.TabIndex = 0;
             transportType.Text = "Автобус";
-            // 
-            // closeButton
-            // 
-            closeButton.Font = new Font("Calibri", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            closeButton.Location = new Point(1069, -1);
-            closeButton.Name = "closeButton";
-            closeButton.Size = new Size(33, 31);
-            closeButton.TabIndex = 43;
-            closeButton.Text = "x";
-            closeButton.UseVisualStyleBackColor = true;
-            closeButton.Click += closeButton_Click;
             // 
             // groupBox2
             // 
@@ -694,7 +683,6 @@
             Controls.Add(label10);
             Controls.Add(label9);
             Controls.Add(groupBox2);
-            Controls.Add(closeButton);
             Controls.Add(panel1);
             Controls.Add(nowDateType);
             Controls.Add(nowDate);
@@ -724,7 +712,7 @@
             Controls.Add(nowTime);
             Controls.Add(label2);
             Controls.Add(label1);
-            FormBorderStyle = FormBorderStyle.None;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "MainForm";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -786,7 +774,6 @@
         private Label nowDateType;
         private Panel panel1;
         private FlowLayoutPanel flowLayoutPanel1;
-        private Button closeButton;
         private GroupBox groupBox2;
         private RadioButton radioButton11;
         private RadioButton radioButton12;

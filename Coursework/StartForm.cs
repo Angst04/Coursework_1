@@ -38,7 +38,7 @@ namespace Coursework
             InitCalendar(selectedDate);
         }
 
-        private void closeButton_Click(object sender, EventArgs e)
+        private void StartForm_Closing(object sender, CancelEventArgs e)
         {
             Application.Exit();
         }

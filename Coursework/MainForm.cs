@@ -11,8 +11,8 @@ namespace Coursework
 {
     public partial class MainForm : Form
     {
-        private TimeSpan currentTime = TimeSpan.Zero;
-        private const int timeMultiplier = 60;
+        private TimeSpan currentTime = new TimeSpan(8, 0, 0);
+        private const int timeMultiplier = 40;
 
         private Random random = new Random();
         private int[] passengers = new int[6];
@@ -36,6 +36,10 @@ namespace Coursework
 
             busRemainsLabel.Text = busRemains.ToString();
             minibusRemainsLabel.Text = minibusRemains.ToString();
+
+            nowTime.Text = new DateTime(currentTime.Ticks).ToString("HH:mm");
+
+            this.FormClosing += new FormClosingEventHandler(MainForm_Closing);
         }
 
         private void InitializeBuses()
@@ -166,7 +170,12 @@ namespace Coursework
                         int passengersToBoard = Math.Min(passengers[bus.CurrentStop - 1], total - bus.PassengersAmount);
 
                         passengers[bus.CurrentStop - 1] -= passengersToBoard;
+
+                        int passengersToLeave = random.Next(2, 10);
+                        passengersToLeave = Math.Min(passengersToLeave, bus.PassengersAmount);
+
                         bus.PassengersAmount += passengersToBoard;
+                        bus.PassengersAmount -= passengersToLeave;
                         UpdatePassengerLabel(i);
 
                         transportCurrentStop.Text = bus.CurrentStop.ToString();
@@ -255,6 +264,11 @@ namespace Coursework
             nowTime.Text = new DateTime(currentTime.Ticks).ToString("HH:mm");
 
             UpdateBusProgress(currentTime);
+
+            if (currentTime.Hours == 20)
+            {
+                OnEndOfDay();
+            }
         }
 
         private void startButton_Click(object sender, EventArgs e)
@@ -268,6 +282,7 @@ namespace Coursework
             {
                 mainTimer.Start();
                 startButton.Text = "Пауза";
+                startButton.BackColor = Control.DefaultBackColor;
             }
         }
 
@@ -318,7 +333,7 @@ namespace Coursework
 
         }
 
-        private void closeButton_Click(object sender, EventArgs e)
+        private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Application.Exit();
         }
@@ -370,6 +385,17 @@ namespace Coursework
 
                 CreateBusForms();
             }
+        }
+
+        private void OnEndOfDay()
+        {
+            mainTimer.Stop();
+
+            DialogResult result = MessageBox.Show(
+                "Ваша смена завершена. Вы будете возвращены в стартовое меню.",
+                "Смена завершена");
+
+            Application.Restart();
         }
     }
 }
