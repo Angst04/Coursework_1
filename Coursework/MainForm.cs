@@ -11,7 +11,7 @@ namespace Coursework
 {
     public partial class MainForm : Form
     {
-        private TimeSpan currentTime = new TimeSpan(8, 0, 0);
+        private TimeSpan currentTime = new TimeSpan(6, 0, 0);
         private const int timeMultiplier = 40;
 
         private Random random = new Random();
@@ -44,8 +44,14 @@ namespace Coursework
 
         private void InitializeBuses()
         {
-            buses.Add(new Bus("Автобус", TimeSpan.FromHours(1)));
-            buses.Add(new Bus("Маршрутка", TimeSpan.FromHours(1)));
+            buses.Add(new Bus("Маршрутка", new TimeSpan(6, 15, 0)));
+            buses.Add(new Bus("Маршрутка", new TimeSpan(7, 0, 0)));
+            buses.Add(new Bus("Автобус", new TimeSpan(7, 45, 0)));
+            buses.Add(new Bus("Автобус", new TimeSpan(8, 15, 0)));
+            buses.Add(new Bus("Автобус", new TimeSpan(9, 0, 0)));
+            buses.Add(new Bus("Маршрутка", new TimeSpan(9, 20, 0)));
+            buses.Add(new Bus("Маршрутка", new TimeSpan(9, 30, 0)));
+            buses.Add(new Bus("Маршрутка", new TimeSpan(10, 30, 0)));
         }
 
         private void BusForm(int ct, dynamic bus)
@@ -223,13 +229,13 @@ namespace Coursework
 
         public void StopSettings(TimeSpan now, int i)
         {
-            if (now.Minutes % 20 == 0)
+            if (now.Minutes % 30 == 0)
             {
                 if (nowDateType.Text == "будний")
                 {
                     if ((now.Hours >= 7 && now.Hours < 10) || (now.Hours >= 18 && now.Hours < 21))
                     {
-                        passengers[i] += random.Next(3, 7);
+                        passengers[i] += random.Next(2, 5);
                     }
                     else if (now.Hours < 7 || now.Hours >= 21)
                     {
@@ -252,7 +258,9 @@ namespace Coursework
                     }
                 }
 
-                passengers[i] = Math.Min(passengers[i], 20);
+                passengers[i] = Math.Min(passengers[i], 30);
+                if (passengers[i] == 30) Controls["passCount" + (i + 1)].ForeColor = Color.Red;
+                else Controls["passCount" + (i + 1)].ForeColor = Control.DefaultForeColor;
             }
         }
 
