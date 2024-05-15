@@ -83,7 +83,6 @@
             label12 = new Label();
             label13 = new Label();
             testLabel = new Label();
-            passengerTimer = new System.Windows.Forms.Timer(components);
             groupBox3 = new GroupBox();
             minibusRemainsLabel = new Label();
             busRemainsLabel = new Label();
@@ -610,11 +609,6 @@
             testLabel.TabIndex = 50;
             testLabel.Text = "Отладка";
             // 
-            // passengerTimer
-            // 
-            passengerTimer.Interval = 3000;
-            passengerTimer.Tick += passengerTimer_Tick;
-            // 
             // groupBox3
             // 
             groupBox3.Controls.Add(minibusRemainsLabel);
@@ -797,7 +791,6 @@
         private Label transportAmount;
         private Label transportDeparture;
         private Label transportType;
-        private System.Windows.Forms.Timer passengerTimer;
         private GroupBox groupBox3;
         private Label minibusRemainsLabel;
         private Label busRemainsLabel;

@@ -252,16 +252,7 @@ namespace Coursework
 
             nowTime.Text = new DateTime(currentTime.Ticks).ToString("HH:mm");
 
-            passengerTimer.Tag = currentTime;
-
             UpdateBusProgress(currentTime);
-        }
-
-        // убрать этот таймер
-        private void passengerTimer_Tick(object sender, EventArgs e)
-        {
-            //TimeSpan currentTime = (TimeSpan)passengerTimer.Tag;
-            //UpdatePassengerCounts(currentTime);
         }
 
         private void startButton_Click(object sender, EventArgs e)
@@ -269,13 +260,11 @@ namespace Coursework
             if (startButton.Text == "Пауза")
             {
                 mainTimer.Stop();
-                passengerTimer.Stop();
                 startButton.Text = "Продолжить";
             }
             else
             {
                 mainTimer.Start();
-                passengerTimer.Start();
                 startButton.Text = "Пауза";
             }
         }
@@ -335,7 +324,6 @@ namespace Coursework
         private void stopButton_Click(object sender, EventArgs e)
         {
             mainTimer.Stop();
-            passengerTimer.Stop();
 
             DialogResult result = MessageBox.Show(
             "Вы уверены, что хотите завершить смену? Это действие вернёт вас в стартовое меню",
@@ -350,7 +338,6 @@ namespace Coursework
             else if (startButton.Text == "Пауза")
             {
                 mainTimer.Start();
-                passengerTimer.Start();
             }
 
             this.TopMost = true;
