@@ -45,6 +45,77 @@ namespace Coursework
             buses.Add(new Bus("Автобус", TimeSpan.FromHours(3)));
         }
 
+        private void BusForm(int ct, dynamic bus)
+        {
+            int total = 50;
+            if (bus.Type == "Маршрутка") total = 25;
+
+            Panel transportPanel = new Panel();
+            System.Windows.Forms.ProgressBar transportProgressBar = new System.Windows.Forms.ProgressBar();
+            Label transportCurrentStop = new Label();
+            System.Windows.Forms.Button transportChangeButton = new System.Windows.Forms.Button();
+            Label transportAmount = new Label();
+            Label transportDeparture = new Label();
+            Label transportType = new Label();
+
+            transportPanel.Name = $"transportPanel_{ct}";
+            transportPanel.BackColor = Color.FromArgb(255, 224, 192);
+            transportPanel.Location = new Point(3, 3);
+            transportPanel.Size = new Size(839, 44);
+            transportPanel.TabIndex = 3;
+
+            transportProgressBar.Location = new Point(401, 10);
+            transportProgressBar.Name = $"transportProgressBar_{ct}";
+            transportProgressBar.Size = new Size(262, 23);
+            transportProgressBar.TabIndex = 5;
+
+            transportCurrentStop.AutoSize = true;
+            transportCurrentStop.Location = new Point(287, 14);
+            transportCurrentStop.Name = $"transportCurrentStop_{ct}";
+            transportCurrentStop.Size = new Size(13, 15);
+            transportCurrentStop.TabIndex = 4;
+            transportCurrentStop.Text = bus.CurrentStop.ToString();
+
+            transportChangeButton.Location = new Point(743, 10);
+            transportChangeButton.Name = $"transportChangeButton_{ct}";
+            transportChangeButton.Size = new Size(75, 23);
+            transportChangeButton.TabIndex = 3;
+            transportChangeButton.Text = "Убрать";
+            transportChangeButton.UseVisualStyleBackColor = true;
+            transportChangeButton.Click += transportChangeButtons_Click;
+
+            transportAmount.AutoSize = true;
+            transportAmount.Location = new Point(188, 14);
+            transportAmount.Name = $"transportAmount_{ct}";
+            transportAmount.Size = new Size(30, 15);
+            transportAmount.TabIndex = 2;
+            transportAmount.Text = bus.PassengersAmount.ToString() + "/" + total.ToString();
+
+            transportDeparture.AutoSize = true;
+            transportDeparture.Location = new Point(97, 14);
+            transportDeparture.Name = $"transportDeparture_{ct}";
+            transportDeparture.Size = new Size(34, 15);
+            transportDeparture.TabIndex = 1;
+            transportDeparture.Text = DateTime.Today.Add(bus.DepartureTime).ToString("HH:mm");
+
+
+            transportType.AutoSize = true;
+            transportType.Location = new Point(11, 14);
+            transportType.Name = $"transportType_{ct}";
+            transportType.Size = new Size(52, 15);
+            transportType.TabIndex = 0;
+            transportType.Text = bus.Type;
+
+            transportPanel.Controls.Add(transportProgressBar);
+            transportPanel.Controls.Add(transportCurrentStop);
+            transportPanel.Controls.Add(transportChangeButton);
+            transportPanel.Controls.Add(transportAmount);
+            transportPanel.Controls.Add(transportDeparture);
+            transportPanel.Controls.Add(transportType);
+
+            flowLayoutPanel1.Controls.Add(transportPanel);
+        }
+
         private void CreateBusForms()
         {
             flowLayoutPanel1.Controls.Clear();
@@ -52,73 +123,7 @@ namespace Coursework
             int ct = 0;
             foreach (var bus in buses)
             {
-                int total = 50;
-                if (bus.Type == "Маршрутка") total = 25;
-
-                Panel transportPanel = new Panel();
-                System.Windows.Forms.ProgressBar transportProgressBar = new System.Windows.Forms.ProgressBar();
-                Label transportCurrentStop = new Label();
-                System.Windows.Forms.Button transportChangeButton = new System.Windows.Forms.Button();
-                Label transportAmount = new Label();
-                Label transportDeparture = new Label();
-                Label transportType = new Label();
-
-                transportPanel.Name = $"transportPanel_{ct}";
-                transportPanel.BackColor = Color.FromArgb(255, 224, 192);
-                transportPanel.Location = new Point(3, 3);
-                transportPanel.Size = new Size(839, 44);
-                transportPanel.TabIndex = 3;
-
-                transportProgressBar.Location = new Point(401, 10);
-                transportProgressBar.Name = $"transportProgressBar_{ct}";
-                transportProgressBar.Size = new Size(262, 23);
-                transportProgressBar.TabIndex = 5;
-
-                transportCurrentStop.AutoSize = true;
-                transportCurrentStop.Location = new Point(287, 14);
-                transportCurrentStop.Name = $"transportCurrentStop_{ct}";
-                transportCurrentStop.Size = new Size(13, 15);
-                transportCurrentStop.TabIndex = 4;
-                transportCurrentStop.Text = bus.CurrentStop.ToString();
-
-                transportChangeButton.Location = new Point(743, 10);
-                transportChangeButton.Name = $"transportChangeButton_{ct}";
-                transportChangeButton.Size = new Size(75, 23);
-                transportChangeButton.TabIndex = 3;
-                transportChangeButton.Text = "Изменить";
-                transportChangeButton.UseVisualStyleBackColor = true;
-                transportChangeButton.Click += transportChangeButtons_Click;
-
-                transportAmount.AutoSize = true;
-                transportAmount.Location = new Point(188, 14);
-                transportAmount.Name = $"transportAmount_{ct}";
-                transportAmount.Size = new Size(30, 15);
-                transportAmount.TabIndex = 2;
-                transportAmount.Text = bus.PassengersAmount.ToString() + "/" + total.ToString();
-
-                transportDeparture.AutoSize = true;
-                transportDeparture.Location = new Point(97, 14);
-                transportDeparture.Name = $"transportDeparture_{ct}";
-                transportDeparture.Size = new Size(34, 15);
-                transportDeparture.TabIndex = 1;
-                transportDeparture.Text = DateTime.Today.Add(bus.DepartureTime).ToString("HH:mm");
-
-
-                transportType.AutoSize = true;
-                transportType.Location = new Point(11, 14);
-                transportType.Name = $"transportType_{ct}";
-                transportType.Size = new Size(52, 15);
-                transportType.TabIndex = 0;
-                transportType.Text = bus.Type;
-
-                transportPanel.Controls.Add(transportProgressBar);
-                transportPanel.Controls.Add(transportCurrentStop);
-                transportPanel.Controls.Add(transportChangeButton);
-                transportPanel.Controls.Add(transportAmount);
-                transportPanel.Controls.Add(transportDeparture);
-                transportPanel.Controls.Add(transportType);
-
-                flowLayoutPanel1.Controls.Add(transportPanel);
+                BusForm(ct, bus);
                 ct++;
             }
         }
@@ -278,83 +283,17 @@ namespace Coursework
         public void AddNewBus(string type, int timeBetweenStops)
         {
             int currentStop = 1;
-            if (radioButton1.Checked) currentStop = 1;
-            else if (radioButton2.Checked) currentStop = 2;
+            if (radioButton2.Checked) currentStop = 2;
             else if (radioButton3.Checked) currentStop = 3;
             else if (radioButton4.Checked) currentStop = 4;
             else if (radioButton5.Checked) currentStop = 5;
             else if (radioButton6.Checked) currentStop = 6;
 
-            buses.Add(new Bus(type, TimeSpan.FromHours(currentTime.TotalHours).Add(TimeSpan.FromMinutes(timeBetweenStops)), timeBetweenStops));
+            buses.Add(new Bus(type, TimeSpan.FromHours(currentTime.TotalHours).Add(TimeSpan.FromMinutes(timeBetweenStops)), timeBetweenStops, currentStop));
 
             int ct = buses.Count() - 1;
-            int total = 50;
-            if (type == "Маршрутка") total = 25;
-
-            Panel transportPanel = new Panel();
-            System.Windows.Forms.ProgressBar transportProgressBar = new System.Windows.Forms.ProgressBar();
-            Label transportCurrentStop = new Label();
-            System.Windows.Forms.Button transportChangeButton = new System.Windows.Forms.Button();
-            Label transportAmount = new Label();
-            Label transportDeparture = new Label();
-            Label transportType = new Label();
-
-            transportPanel.Name = $"transportPanel_{ct}";
-            transportPanel.BackColor = Color.FromArgb(255, 224, 192);
-            transportPanel.Location = new Point(3, 3);
-            transportPanel.Size = new Size(839, 44);
-            transportPanel.TabIndex = 3;
-
-            transportProgressBar.Location = new Point(401, 10);
-            transportProgressBar.Name = $"transportProgressBar_{ct}";
-            transportProgressBar.Size = new Size(262, 23);
-            transportProgressBar.TabIndex = 5;
-
-            transportCurrentStop.AutoSize = true;
-            transportCurrentStop.Location = new Point(287, 14);
-            transportCurrentStop.Name = $"transportCurrentStop_{ct}";
-            transportCurrentStop.Size = new Size(13, 15);
-            transportCurrentStop.TabIndex = 4;
-            transportCurrentStop.Text = currentStop.ToString();
-
-            transportChangeButton.Location = new Point(743, 10);
-            transportChangeButton.Name = $"transportChangeButton_{ct}";
-            transportChangeButton.Size = new Size(75, 23);
-            transportChangeButton.TabIndex = 3;
-            transportChangeButton.Text = "Изменить";
-            transportChangeButton.UseVisualStyleBackColor = true;
-            transportChangeButton.Click += transportChangeButtons_Click;
-
-            transportAmount.AutoSize = true;
-            transportAmount.Location = new Point(188, 14);
-            transportAmount.Name = $"transportAmount_{ct}";
-            transportAmount.Size = new Size(30, 15);
-            transportAmount.TabIndex = 2;
-            transportAmount.Text = "0/" + total.ToString();
-
-            transportDeparture.AutoSize = true;
-            transportDeparture.Location = new Point(97, 14);
-            transportDeparture.Name = $"transportDeparture_{ct}";
-            transportDeparture.Size = new Size(34, 15);
-            transportDeparture.TabIndex = 1;
-            transportDeparture.Text = DateTime.Today.Add(currentTime).ToString("HH:mm");
-
-
-            transportType.AutoSize = true;
-            transportType.Location = new Point(11, 14);
-            transportType.Name = $"transportType_{ct}";
-            transportType.Size = new Size(52, 15);
-            transportType.TabIndex = 0;
-            transportType.Text = type;
-
-            transportPanel.Controls.Add(transportProgressBar);
-            transportPanel.Controls.Add(transportCurrentStop);
-            transportPanel.Controls.Add(transportChangeButton);
-            transportPanel.Controls.Add(transportAmount);
-            transportPanel.Controls.Add(transportDeparture);
-            transportPanel.Controls.Add(transportType);
-
-            flowLayoutPanel1.Controls.Add(transportPanel);
+            var bus = buses[ct];
+            BusForm(ct, bus);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -417,35 +356,11 @@ namespace Coursework
             this.TopMost = true;
         }
 
-        private void RemoveBus(int index)
-        {
-            if (index >= 0 && index < buses.Count)
-            {
-                buses.RemoveAt(index);
-
-                flowLayoutPanel1.Controls.RemoveAt(index);
-                for (int i = index; i < flowLayoutPanel1.Controls.Count; i++)
-                {
-                    string newName = $"transportPanel_{i}";
-                    flowLayoutPanel1.Controls[i].Name = newName;
-                    foreach (Control control in flowLayoutPanel1.Controls[i].Controls)
-                    {
-                        if (control.Name.StartsWith("transport"))
-                        {
-                            control.Name = control.Name.Replace($"_{i + 1}", $"_{i}");
-                        }
-                    }
-                }
-            }
-        }
-
         private void transportChangeButtons_Click(object sender, EventArgs e)
         {
             System.Windows.Forms.Button clickedButton = sender as System.Windows.Forms.Button;
             string buttonName = clickedButton.Name;
             int index = int.Parse(buttonName.Split('_').Last());
-
-            testLabel.Text = index.ToString();
 
             if (index >= 0 && index < buses.Count)
             {
@@ -453,13 +368,13 @@ namespace Coursework
                 {
                     busRemains++;
                     busRemainsLabel.Text = busRemains.ToString();
-                    if (busRemains == 0) busRemainsLabel.ForeColor = Control.DefaultForeColor;
+                    if (busRemains > 0) busRemainsLabel.ForeColor = Control.DefaultForeColor;
                 }
                 else
                 {
                     minibusRemains++;
                     minibusRemainsLabel.Text = minibusRemains.ToString();
-                    if (minibusRemains == 0) busRemainsLabel.ForeColor = Control.DefaultForeColor;
+                    if (minibusRemains > 0) busRemainsLabel.ForeColor = Control.DefaultForeColor;
                 }
 
                 buses.RemoveAt(index);

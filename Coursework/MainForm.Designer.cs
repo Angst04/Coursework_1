@@ -129,7 +129,7 @@
             // nowTime
             // 
             nowTime.AutoSize = true;
-            nowTime.Location = new Point(96, 65);
+            nowTime.Location = new Point(96, 64);
             nowTime.Name = "nowTime";
             nowTime.Size = new Size(34, 15);
             nowTime.TabIndex = 3;
