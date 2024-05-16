@@ -446,7 +446,7 @@
             // startButton
             // 
             startButton.BackColor = Color.FromArgb(128, 255, 128);
-            startButton.Location = new Point(72, 163);
+            startButton.Location = new Point(52, 187);
             startButton.Margin = new Padding(4, 3, 4, 3);
             startButton.Name = "startButton";
             startButton.Size = new Size(91, 38);
@@ -712,7 +712,7 @@
             // stopButton
             // 
             stopButton.BackColor = Color.FromArgb(255, 128, 128);
-            stopButton.Location = new Point(72, 218);
+            stopButton.Location = new Point(52, 242);
             stopButton.Margin = new Padding(4, 3, 4, 3);
             stopButton.Name = "stopButton";
             stopButton.Size = new Size(91, 38);

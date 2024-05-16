@@ -33,7 +33,6 @@ namespace Coursework
             nowDate.Text = DataBank.NowDate;
             nowDateType.Text = DataBank.NowDateType;
 
-
             busRemainsLabel.Text = busRemains.ToString();
             minibusRemainsLabel.Text = minibusRemains.ToString();
 
@@ -41,6 +40,7 @@ namespace Coursework
 
             this.FormClosing += new FormClosingEventHandler(MainForm_Closing);
         }
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             TimeSpan elapsedTime = TimeSpan.FromSeconds(1);
@@ -162,7 +162,6 @@ namespace Coursework
             for (int i = 0; i < passengers.Length; i++)
             {
                 UpdatePassengerLabel(i);
-
                 StopSettings(now, i);
             }
         }
@@ -248,7 +247,6 @@ namespace Coursework
                 "Выбранный транспорт не доступен. Обратите внимание на доступный транспорт",
                 "Предупреждение");
             }
-
         }
 
         private void transportChangeButtons_Click(object sender, EventArgs e)
@@ -361,7 +359,7 @@ namespace Coursework
             transportCurrentStop.Size = new Size(13, 15);
             transportCurrentStop.TabIndex = 4;
             transportCurrentStop.Text = bus.CurrentStop.ToString();
-            if (bus.CurrentStop == 0) transportCurrentStop.Text = "Депо";
+            if (bus.CurrentStop == 0) transportCurrentStop.Text = "Парк";
 
             transportChangeButton.Location = new Point(743, 10);
             transportChangeButton.Name = $"transportChangeButton_{ct}";
